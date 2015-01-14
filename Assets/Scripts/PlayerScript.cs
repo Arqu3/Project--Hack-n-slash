@@ -3,7 +3,7 @@ using System.Collections;
 
 public class PlayerScript : MonoBehaviour 
 {
-	public Vector3 JumpForce = new Vector3(0, 8, 0);
+    public float JumpForce = 8;
 	float rotationSpeed = 500f;
 
 	public GameObject blockPrefab;
@@ -11,24 +11,46 @@ public class PlayerScript : MonoBehaviour
 
 	public Transform target;
 	public float speed;
-    Vector3 pos;
+    Vector3 position;
+
+    Vector3 newPosition;
+    bool hasReached = true;
 
 	void Start () 
 	{
-        pos = transform.position;
+        position = transform.position;
+        newPosition = transform.position;
 	}
 	
 	void Update () 
 	{
 		//Screen.showCursor = false;
 
-        if (Input.GetMouseButton(1))
+        //if (Input.GetMouseButton(1))
+        //{
+        //    pos = Input.mousePosition;
+        //    pos.z = 45f;
+        //    pos = Camera.main.ScreenToWorldPoint(pos);
+        //}
+        //transform.position = Vector3.Lerp(transform.position, pos, speed * Time.deltaTime);
+
+        if (Input.GetMouseButtonDown(1))
         {
-            pos = Input.mousePosition;
-            pos.z = 45f;
-            pos = Camera.main.ScreenToWorldPoint(pos);
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out hit))
+            {
+                hasReached = false;
+                newPosition = hit.point;
+                //transform.position = newPosition + new Vector3(0, 2);
+            }
         }
-        transform.position = Vector3.Lerp(transform.position, pos, speed * Time.deltaTime);
+
+        if (!hasReached && !Mathf.Approximately(transform.position.magnitude, newPosition.magnitude))
+            transform.position = Vector3.Lerp(transform.position, newPosition, 1 * Time.deltaTime);
+
+        else if (!hasReached && Mathf.Approximately(transform.position.magnitude, newPosition.magnitude))
+            hasReached = true;
 
         Movement();
 
@@ -42,7 +64,7 @@ public class PlayerScript : MonoBehaviour
         rigidbody.velocity = new Vector3(speed, rigidbody.velocity.y, rigidbody.velocity.z);
         if (Input.GetKey(KeyCode.Space) == true)
         {
-            rigidbody.AddForce(JumpForce);
+            rigidbody.AddForce(new Vector3(0, JumpForce));
         }
         float step = speed * Time.deltaTime;
         if (target != null)
