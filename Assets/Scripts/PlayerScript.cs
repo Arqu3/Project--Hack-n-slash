@@ -14,6 +14,7 @@ public class PlayerScript : MonoBehaviour
     Vector3 newPosition;
     bool hasReached = true;
     public float duration = 50f;
+    float yAxis = 0.5f;
 
 	void Start () 
 	{
@@ -34,6 +35,7 @@ public class PlayerScript : MonoBehaviour
             {
                 hasReached = false;
                 newPosition = hit.point;
+                newPosition.y = yAxis;
             }
         }
         //If the player hasn't reached its point, it moves towards it
