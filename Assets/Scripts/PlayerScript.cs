@@ -9,12 +9,11 @@ public class PlayerScript : MonoBehaviour
 	public GameObject blockPrefab;
 	float blockTimer = 0f;
 
-	public Transform target;
-	public float speed;
     Vector3 position;
 
     Vector3 newPosition;
     bool hasReached = true;
+    public float duration = 50f;
 
 	void Start () 
 	{
@@ -26,15 +25,8 @@ public class PlayerScript : MonoBehaviour
 	{
 		//Screen.showCursor = false;
 
-        //if (Input.GetMouseButton(1))
-        //{
-        //    pos = Input.mousePosition;
-        //    pos.z = 45f;
-        //    pos = Camera.main.ScreenToWorldPoint(pos);
-        //}
-        //transform.position = Vector3.Lerp(transform.position, pos, speed * Time.deltaTime);
-
-        if (Input.GetMouseButtonDown(1))
+        //Uses raycasthit to detect where the player is clicking and moves to that position
+        if (Input.GetMouseButton(0))
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -42,13 +34,12 @@ public class PlayerScript : MonoBehaviour
             {
                 hasReached = false;
                 newPosition = hit.point;
-                //transform.position = newPosition + new Vector3(0, 2);
             }
         }
-
+        //If the player hasn't reached its point, it moves towards it
         if (!hasReached && !Mathf.Approximately(transform.position.magnitude, newPosition.magnitude))
-            transform.position = Vector3.Lerp(transform.position, newPosition, 1 * Time.deltaTime);
-
+            transform.position = Vector3.Lerp(transform.position, newPosition, 1 / (duration*(Vector3.Distance(transform.position, newPosition))));
+        //Stop the player movement when point is reached
         else if (!hasReached && Mathf.Approximately(transform.position.magnitude, newPosition.magnitude))
             hasReached = true;
 
@@ -66,9 +57,6 @@ public class PlayerScript : MonoBehaviour
         {
             rigidbody.AddForce(new Vector3(0, JumpForce));
         }
-        float step = speed * Time.deltaTime;
-        if (target != null)
-            transform.position = Vector3.MoveTowards(transform.position, target.position, step);
     }
 
     void Rotation()
@@ -84,7 +72,7 @@ public class PlayerScript : MonoBehaviour
     {
         if (blockTimer > 0)
             blockTimer--;
-        if (Input.GetMouseButton(0) && blockTimer == 0)
+        if (Input.GetMouseButton(1) && blockTimer == 0)
         {
             blockTimer = 30;
             GameObject block = (GameObject)Instantiate(blockPrefab, new Vector3(transform.position.x, transform.position.y + 10, transform.position.z), Quaternion.identity);
