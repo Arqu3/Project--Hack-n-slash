@@ -30,11 +30,11 @@ public class PlayerScript : MonoBehaviour
         }
         transform.position = Vector3.Lerp(transform.position, pos, speed * Time.deltaTime);
 
-        //Movement();
+        Movement();
 
         //Rotation();
 
-        //Addblocks();
+        Addblocks();
 	}
     void Movement()
     {
