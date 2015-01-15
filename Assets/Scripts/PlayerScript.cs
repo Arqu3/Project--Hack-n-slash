@@ -45,6 +45,12 @@ public class PlayerScript : MonoBehaviour
         else if (!hasReached && Mathf.Approximately(transform.position.magnitude, newPosition.magnitude))
             hasReached = true;
 
+        Vector3 fwd = transform.TransformDirection(Vector3.forward);
+        if (Physics.Raycast(transform.position, fwd, 5))
+            print("asdf");
+
+        Debug.DrawRay(transform.position, fwd * 5, Color.red);
+
         Movement();
 
         //Rotation();
