@@ -9,8 +9,6 @@ public class PlayerScript : MonoBehaviour
 	public GameObject blockPrefab;
 	float blockTimer = 0f;
 
-    Vector3 position;
-
     Vector3 newPosition;
     bool hasReached = true;
     public float duration = 50f;
@@ -18,7 +16,6 @@ public class PlayerScript : MonoBehaviour
 
 	void Start () 
 	{
-        position = transform.position;
         newPosition = transform.position;
 	}
 	
