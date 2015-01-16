@@ -36,6 +36,11 @@ public class PlayerScript : MonoBehaviour
                 hasReached = false;
                 newPosition = hit.point;
                 newPosition.y = yAxis;
+
+                //Player rotation relative to mouse click
+                Vector3 relative = transform.InverseTransformPoint(hit.point);
+                float angle = Mathf.Atan2(relative.x, relative.z) * Mathf.Rad2Deg;
+                transform.Rotate(0, angle, 0);
             }
         }
         //If the player hasn't reached its point, it moves towards it
@@ -47,7 +52,10 @@ public class PlayerScript : MonoBehaviour
 
         Vector3 fwd = transform.TransformDirection(Vector3.forward);
         if (Physics.Raycast(transform.position, fwd, 5))
+        {
             print("asdf");
+            gameObject.SendMessage("ApplyDamage", 5.0f);
+        }
 
         Debug.DrawRay(transform.position, fwd * 5, Color.red);
 
@@ -85,5 +93,10 @@ public class PlayerScript : MonoBehaviour
             blockTimer = 30;
             GameObject block = (GameObject)Instantiate(blockPrefab, new Vector3(transform.position.x, transform.position.y + 10, transform.position.z), Quaternion.identity);
         }
+    }
+
+    void ApplyDamage(float damage)
+    {
+        print(damage);
     }
 }
