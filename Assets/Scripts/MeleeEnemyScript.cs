@@ -4,14 +4,41 @@ using System.Collections;
 public class MeleeEnemyScript : MonoBehaviour {
 
     public Transform target;
-    public float speed = 100;
+    Transform myTransform;
+    public float speed = 3;
+    float rotationSpeed = 3;
+    float range = 10f;
+    float range2 = 10f;
+    float stop = 1;
+
+    void Awake()
+    {
+        myTransform = transform;
+    }
 
 	void Start () 
     {
+        target = GameObject.FindGameObjectWithTag("Player").transform;
 	}
 	
 	void Update () 
     {
-        transform.position = Vector3.Lerp(transform.position, target.position, 1 / (speed * (Vector3.Distance(transform.position, target.position))));
+        //Enemy rotation relative to player position
+        float distance = Vector3.Distance(myTransform.position, target.position);
+        if (distance <= range2 && distance >= range)
+        {
+            myTransform.rotation = Quaternion.Slerp(myTransform.rotation, Quaternion.LookRotation(target.position - myTransform.position), rotationSpeed * Time.deltaTime);
+        }
+        //Move towards player
+        else if (distance <= range && distance > stop)
+        {
+            myTransform.rotation = Quaternion.Slerp(myTransform.rotation, Quaternion.LookRotation(target.position - myTransform.position), rotationSpeed * Time.deltaTime);
+            myTransform.position += myTransform.forward * speed * Time.deltaTime;
+        }
+        //Stops when close to player
+        else if (distance <= stop)
+        {
+            myTransform.rotation = Quaternion.Slerp(myTransform.rotation, Quaternion.LookRotation(target.position - myTransform.position), rotationSpeed * Time.deltaTime);
+        }
 	}
 }
