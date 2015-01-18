@@ -12,7 +12,7 @@ public class PlayerScript : MonoBehaviour
     Vector3 newPosition;
     bool hasReached = true;
     public float duration = 50f;
-    float yAxis = 0.5f;
+    float yAxis = 0.7f;
 
 	void Start () 
 	{

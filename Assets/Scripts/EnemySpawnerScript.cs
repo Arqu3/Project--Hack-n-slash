@@ -24,7 +24,7 @@ public class EnemySpawnerScript : MonoBehaviour {
         if (timer <= 0 && count <= 10)
         {
             timer = 50f;
-            GameObject enemy1 = (GameObject)Instantiate(meleePrefab, new Vector3(Random.Range(-20.0f, 20.0f), 1, Random.Range(-20.0f, 20.0f)), Quaternion.identity);
+            GameObject enemy1 = (GameObject)Instantiate(meleePrefab, new Vector3(Random.Range(-20.0f, 20.0f), 0.7f, Random.Range(-20.0f, 20.0f)), Quaternion.identity);
         }
 	}
 }
