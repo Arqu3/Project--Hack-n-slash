@@ -11,6 +11,8 @@ public class MeleeEnemyScript : MonoBehaviour {
     float range2 = 10f;
     float stop = 1;
 
+    float health = 100f;
+
     void Awake()
     {
         myTransform = transform;
@@ -40,5 +42,13 @@ public class MeleeEnemyScript : MonoBehaviour {
         {
             myTransform.rotation = Quaternion.Slerp(myTransform.rotation, Quaternion.LookRotation(target.position - myTransform.position), rotationSpeed * Time.deltaTime);
         }
+
+        if (health <= 0)
+            Destroy(gameObject);
+        
 	}
+    void ApplyDamage(float damage)
+    {
+        health -= damage;
+    }
 }

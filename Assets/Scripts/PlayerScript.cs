@@ -50,7 +50,6 @@ public class PlayerScript : MonoBehaviour
         Vector3 fwd = transform.TransformDirection(Vector3.forward);
         if (Physics.Raycast(transform.position, fwd, 5))
         {
-            print("asdf");
             gameObject.SendMessage("ApplyDamage", 5.0f);
         }
 
@@ -90,10 +89,5 @@ public class PlayerScript : MonoBehaviour
             blockTimer = 30;
             GameObject block = (GameObject)Instantiate(blockPrefab, new Vector3(transform.position.x, transform.position.y + 10, transform.position.z), Quaternion.identity);
         }
-    }
-
-    void ApplyDamage(float damage)
-    {
-        print(damage);
     }
 }
