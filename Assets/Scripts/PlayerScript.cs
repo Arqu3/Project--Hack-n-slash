@@ -14,6 +14,8 @@ public class PlayerScript : MonoBehaviour
     public float duration = 50f;
     float yAxis = 0.7f;
 
+    bool pause = true;
+
 	void Start () 
 	{
         newPosition = transform.position;
@@ -21,45 +23,47 @@ public class PlayerScript : MonoBehaviour
 	
 	void Update () 
 	{
-		//Screen.showCursor = false;
-
-        //Uses raycasthit to detect where the player is clicking and moves to that position
-        if (Input.GetMouseButton(0))
+        if (pause == false)
         {
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out hit))
+
+            //Uses raycasthit to detect where the player is clicking and moves to that position
+            if (Input.GetMouseButton(0))
             {
-                hasReached = false;
-                newPosition = hit.point;
-                newPosition.y = yAxis;
+                RaycastHit hit;
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(ray, out hit))
+                {
+                    hasReached = false;
+                    newPosition = hit.point;
+                    newPosition.y = yAxis;
 
-                //Player rotation relative to mouse click
-                Vector3 relative = transform.InverseTransformPoint(hit.point);
-                float angle = Mathf.Atan2(relative.x, relative.z) * Mathf.Rad2Deg;
-                transform.Rotate(0, angle, 0);
+                    //Player rotation relative to mouse click
+                    Vector3 relative = transform.InverseTransformPoint(hit.point);
+                    float angle = Mathf.Atan2(relative.x, relative.z) * Mathf.Rad2Deg;
+                    transform.Rotate(0, angle, 0);
+                }
             }
+            //If the player hasn't reached its point, it moves towards it
+            if (!hasReached && !Mathf.Approximately(transform.position.magnitude, newPosition.magnitude))
+                transform.position = Vector3.Lerp(transform.position, newPosition, 1 / (duration * (Vector3.Distance(transform.position, newPosition))));
+            //Stop the player movement when point is reached
+            else if (!hasReached && Mathf.Approximately(transform.position.magnitude, newPosition.magnitude))
+                hasReached = true;
+
+            Vector3 fwd = transform.TransformDirection(Vector3.forward);
+            if (Physics.Raycast(transform.position, fwd, 5))
+            {
+                gameObject.SendMessage("ApplyDamage", 5.0f);
+            }
+
+            Debug.DrawRay(transform.position, fwd * 5, Color.red);
+
+            Movement();
+
+            //Rotation();
+
+            Addblocks();
         }
-        //If the player hasn't reached its point, it moves towards it
-        if (!hasReached && !Mathf.Approximately(transform.position.magnitude, newPosition.magnitude))
-            transform.position = Vector3.Lerp(transform.position, newPosition, 1 / (duration*(Vector3.Distance(transform.position, newPosition))));
-        //Stop the player movement when point is reached
-        else if (!hasReached && Mathf.Approximately(transform.position.magnitude, newPosition.magnitude))
-            hasReached = true;
-
-        Vector3 fwd = transform.TransformDirection(Vector3.forward);
-        if (Physics.Raycast(transform.position, fwd, 5))
-        {
-            gameObject.SendMessage("ApplyDamage", 5.0f);
-        }
-
-        Debug.DrawRay(transform.position, fwd * 5, Color.red);
-
-        Movement();
-
-        //Rotation();
-
-        Addblocks();
 	}
     void Movement()
     {
@@ -89,5 +93,10 @@ public class PlayerScript : MonoBehaviour
             blockTimer = 30;
             GameObject block = (GameObject)Instantiate(blockPrefab, new Vector3(transform.position.x, transform.position.y + 10, transform.position.z), Quaternion.identity);
         }
+    }
+
+    public void Pause()
+    {
+        pause = !pause;
     }
 }

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SwitchCameraScript : MonoBehaviour {
+public class UIScript : MonoBehaviour {
 
     public Camera camera1;
     public Camera camera2;
@@ -14,10 +14,11 @@ public class SwitchCameraScript : MonoBehaviour {
 	
 	void Update () 
     {
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            camera1.enabled = !camera1.enabled;
-            camera2.enabled = !camera2.enabled;
-        }
 	}
+
+    public void Switch()
+    {
+        camera1.enabled = !camera1.enabled;
+        camera2.enabled = !camera2.enabled;
+    }
 }
