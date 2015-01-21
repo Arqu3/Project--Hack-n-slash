@@ -14,6 +14,11 @@ public class UIScript : MonoBehaviour {
 	
 	void Update () 
     {
+        if (camera2.enabled == true)
+        {
+            if (Input.GetKey(KeyCode.Escape))
+                CameraSwitch();
+        }
 	}
 
     public void CameraSwitch()

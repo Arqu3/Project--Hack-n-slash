@@ -25,7 +25,6 @@ public class PlayerScript : MonoBehaviour
 	{
         if (pause == false)
         {
-
             //Uses raycasthit to detect where the player is clicking and moves to that position
             if (Input.GetMouseButton(0))
             {

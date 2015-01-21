@@ -25,26 +25,26 @@ public class MeleeEnemyScript : MonoBehaviour {
 	
 	void Update () 
     {
-        //Enemy rotation relative to player position
-        float distance = Vector3.Distance(myTransform.position, target.position);
-        if (distance <= range2 && distance >= range)
-        {
-            myTransform.rotation = Quaternion.Slerp(myTransform.rotation, Quaternion.LookRotation(target.position - myTransform.position), rotationSpeed * Time.deltaTime);
-        }
-        //Move towards player
-        else if (distance <= range && distance > stop)
-        {
-            myTransform.rotation = Quaternion.Slerp(myTransform.rotation, Quaternion.LookRotation(target.position - myTransform.position), rotationSpeed * Time.deltaTime);
-            myTransform.position += myTransform.forward * speed * Time.deltaTime;
-        }
-        //Stops when close to player
-        else if (distance <= stop)
-        {
-            myTransform.rotation = Quaternion.Slerp(myTransform.rotation, Quaternion.LookRotation(target.position - myTransform.position), rotationSpeed * Time.deltaTime);
-        }
+            //Enemy rotation relative to player position
+            float distance = Vector3.Distance(myTransform.position, target.position);
+            if (distance <= range2 && distance >= range)
+            {
+                myTransform.rotation = Quaternion.Slerp(myTransform.rotation, Quaternion.LookRotation(target.position - myTransform.position), rotationSpeed * Time.deltaTime);
+            }
+            //Move towards player
+            else if (distance <= range && distance > stop)
+            {
+                myTransform.rotation = Quaternion.Slerp(myTransform.rotation, Quaternion.LookRotation(target.position - myTransform.position), rotationSpeed * Time.deltaTime);
+                myTransform.position += myTransform.forward * speed * Time.deltaTime;
+            }
+            //Stops when close to player
+            else if (distance <= stop)
+            {
+                myTransform.rotation = Quaternion.Slerp(myTransform.rotation, Quaternion.LookRotation(target.position - myTransform.position), rotationSpeed * Time.deltaTime);
+            }
 
-        if (health <= 0)
-            Destroy(gameObject);
+            if (health <= 0)
+                Destroy(gameObject);
         
 	}
     void ApplyDamage(float damage)
