@@ -16,7 +16,7 @@ public class UIScript : MonoBehaviour {
     {
 	}
 
-    public void Switch()
+    public void CameraSwitch()
     {
         camera1.enabled = !camera1.enabled;
         camera2.enabled = !camera2.enabled;

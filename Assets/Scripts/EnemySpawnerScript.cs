@@ -7,7 +7,7 @@ public class EnemySpawnerScript : MonoBehaviour {
     float timer = 0f;
     GameObject[] getCount;
     float count;
-
+    bool pause = true;
 
 	void Start () 
     {
@@ -15,16 +15,24 @@ public class EnemySpawnerScript : MonoBehaviour {
 	
 	void Update () 
     {
-        getCount = GameObject.FindGameObjectsWithTag("Enemy");
-        count = getCount.Length;
-        
-
-        if (timer > 0)
-            timer--;
-        if (timer <= 0 && count <= 10)
+        if (pause == false)
         {
-            timer = 50f;
-            GameObject enemy1 = (GameObject)Instantiate(meleePrefab, new Vector3(Random.Range(-20.0f, 20.0f), 0.7f, Random.Range(-20.0f, 20.0f)), Quaternion.identity);
+            getCount = GameObject.FindGameObjectsWithTag("Enemy");
+            count = getCount.Length;
+
+
+            if (timer > 0)
+                timer--;
+            if (timer <= 0 && count <= 10)
+            {
+                timer = 50f;
+                GameObject enemy1 = (GameObject)Instantiate(meleePrefab, new Vector3(Random.Range(-20.0f, 20.0f), 0.7f, Random.Range(-20.0f, 20.0f)), Quaternion.identity);
+            }
         }
 	}
+
+    public void Pause()
+    {
+        pause = !pause;
+    }
 }

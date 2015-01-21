@@ -6,15 +6,15 @@ public class PlayerScript : MonoBehaviour
     public float JumpForce = 8;
 	float rotationSpeed = 500f;
 
-	public GameObject blockPrefab;
-	float blockTimer = 0f;
-
     Vector3 newPosition;
     bool hasReached = true;
     public float duration = 50f;
     float yAxis = 0.7f;
 
     bool pause = true;
+
+    public LayerMask rayMask;
+    RaycastHit hit;
 
 	void Start () 
 	{
@@ -29,9 +29,8 @@ public class PlayerScript : MonoBehaviour
             //Uses raycasthit to detect where the player is clicking and moves to that position
             if (Input.GetMouseButton(0))
             {
-                RaycastHit hit;
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(ray, out hit))
+                if (Physics.Raycast(ray, out hit, 1000, rayMask))
                 {
                     hasReached = false;
                     newPosition = hit.point;
@@ -46,14 +45,16 @@ public class PlayerScript : MonoBehaviour
             //If the player hasn't reached its point, it moves towards it
             if (!hasReached && !Mathf.Approximately(transform.position.magnitude, newPosition.magnitude))
                 transform.position = Vector3.Lerp(transform.position, newPosition, 1 / (duration * (Vector3.Distance(transform.position, newPosition))));
+
             //Stop the player movement when point is reached
             else if (!hasReached && Mathf.Approximately(transform.position.magnitude, newPosition.magnitude))
                 hasReached = true;
 
             Vector3 fwd = transform.TransformDirection(Vector3.forward);
-            if (Physics.Raycast(transform.position, fwd, 5))
+            if (Physics.Raycast(transform.position, fwd,out hit, 5))
             {
-                gameObject.SendMessage("ApplyDamage", 5.0f);
+                if (hit.collider.tag == "Enemy")
+                hit.collider.SendMessage("ApplyDamage", 5.0f);
             }
 
             Debug.DrawRay(transform.position, fwd * 5, Color.red);
@@ -61,8 +62,6 @@ public class PlayerScript : MonoBehaviour
             Movement();
 
             //Rotation();
-
-            Addblocks();
         }
 	}
     void Movement()
@@ -82,17 +81,6 @@ public class PlayerScript : MonoBehaviour
         rotationX *= Time.deltaTime;
         rotationY *= Time.deltaTime;
         transform.Rotate(rotationY, rotationX, 0);
-    }
-
-    void Addblocks()
-    {
-        if (blockTimer > 0)
-            blockTimer--;
-        if (Input.GetMouseButton(1) && blockTimer == 0)
-        {
-            blockTimer = 30;
-            GameObject block = (GameObject)Instantiate(blockPrefab, new Vector3(transform.position.x, transform.position.y + 10, transform.position.z), Quaternion.identity);
-        }
     }
 
     public void Pause()

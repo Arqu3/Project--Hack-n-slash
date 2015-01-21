@@ -11,5 +11,7 @@ public class BlockScript : MonoBehaviour {
 	{
 		if (transform.position.y < -10)
 			Destroy(gameObject);
+
+        Destroy(gameObject, 3);
 	}
 }
