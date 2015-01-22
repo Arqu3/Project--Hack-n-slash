@@ -9,7 +9,7 @@ public class UIScript : MonoBehaviour {
 
     bool pauseGame = false;
 
-    public Transform button;
+    public Button button;
 
 	void Start () 
     {
@@ -20,12 +20,18 @@ public class UIScript : MonoBehaviour {
 	void Update () 
     {
         Pause();
+        if (Input.GetKeyDown(KeyCode.Y))
+            CameraSwitch();
 	}
 
     public void CameraSwitch()
     {
         camera1.enabled = !camera1.enabled;
         camera2.enabled = !camera2.enabled;
+    }
+    public void RemoveButton()
+    {
+        GameObject.Destroy(button);
     }
     public void Pause()
     {
@@ -41,7 +47,6 @@ public class UIScript : MonoBehaviour {
                 GameObject.Find("Player").GetComponent<PlayerScript>().enabled = false;
                 GameObject.Find("Enemy").GetComponent<MeleeEnemyScript>().enabled = false;
                 GameObject.Find("EnemySpawner").GetComponent<EnemySpawnerScript>().enabled = false;
-                button.GetComponent<Button>().interactable = false;
             }
 
             if (pauseGame == false)
@@ -52,7 +57,7 @@ public class UIScript : MonoBehaviour {
                 GameObject.Find("Player").GetComponent<PlayerScript>().enabled = true;
                 GameObject.Find("Enemy").GetComponent<MeleeEnemyScript>().enabled = true;
                 GameObject.Find("EnemySpawner").GetComponent<EnemySpawnerScript>().enabled = true;
-                button.GetComponent<Button>().interactable = false;
+                //button.GetComponent<Button>().interactable = false;
             }
         }
     }
