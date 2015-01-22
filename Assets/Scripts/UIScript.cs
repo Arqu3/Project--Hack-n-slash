@@ -9,7 +9,7 @@ public class UIScript : MonoBehaviour {
 
     bool pauseGame = false;
 
-    public Button button;
+    public GameObject button;
 
 	void Start () 
     {
@@ -21,7 +21,10 @@ public class UIScript : MonoBehaviour {
     {
         Pause();
         if (Input.GetKeyDown(KeyCode.Y))
+        {
             CameraSwitch();
+            button.SetActive(true);
+        }
 	}
 
     public void CameraSwitch()
@@ -29,10 +32,12 @@ public class UIScript : MonoBehaviour {
         camera1.enabled = !camera1.enabled;
         camera2.enabled = !camera2.enabled;
     }
-    public void RemoveButton()
+
+    public void ToggleButton()
     {
-        GameObject.Destroy(button);
+        button.SetActive(false);
     }
+
     public void Pause()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
