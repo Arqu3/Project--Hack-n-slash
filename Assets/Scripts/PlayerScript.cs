@@ -15,6 +15,10 @@ public class PlayerScript : MonoBehaviour
 
     public LayerMask rayMask;
     RaycastHit hit;
+    public GUIText text;
+
+    public float range = 3.0f;
+    float hitCD = 0;
 
 	void Start () 
 	{
@@ -49,14 +53,18 @@ public class PlayerScript : MonoBehaviour
             else if (!hasReached && Mathf.Approximately(transform.position.magnitude, newPosition.magnitude))
                 hasReached = true;
 
+            //Player hit detection + damage
+            if (hitCD > 0)
+                hitCD--;
             Vector3 fwd = transform.TransformDirection(Vector3.forward);
-            if (Physics.Raycast(transform.position, fwd,out hit, 5))
+            if (Physics.Raycast(transform.position, fwd, out hit, 3) && Input.GetMouseButton(0) && hitCD <= 0)
             {
+                hitCD = 30;
                 if (hit.collider.tag == "Enemy")
-                hit.collider.SendMessage("ApplyDamage", 5.0f);
+                hit.collider.SendMessage("ApplyDamage", range);
             }
 
-            Debug.DrawRay(transform.position, fwd * 5, Color.red);
+            Debug.DrawRay(transform.position, fwd * range, Color.red);
 
             Movement();
 
