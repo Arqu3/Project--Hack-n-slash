@@ -47,11 +47,14 @@ public class UIScript : MonoBehaviour {
             if (pauseGame == true)
             {
                 //Pauses the game --ENTER ALL SCRIPTS TO DISABLE HERE--
+                Time.timeScale = 0.00001f;
                 pauseGame = true;
                 GameObject.Find("Player").GetComponent<PlayerScript>().enabled = false;
                 foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
                 {
-                    enemy.GetComponent<MeleeEnemyScript>().enabled = false;
+                    MeleeEnemyScript mel = enemy.GetComponent<MeleeEnemyScript>();
+                    if (mel != null)
+                        mel.enabled = false;
                 }
                 GameObject.Find("Enemyspawner").GetComponent<EnemySpawnerScript>().enabled = false;
             }
@@ -59,11 +62,15 @@ public class UIScript : MonoBehaviour {
             if (pauseGame == false)
             {
                 //Unpauses the game --MAKE SURE ALL SCRIPTS ARE RE-ENABLED HERE--
+                Time.timeScale = 1f;
                 pauseGame = false;
                 GameObject.Find("Player").GetComponent<PlayerScript>().enabled = true;
                 foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
                 {
-                    enemy.GetComponent<MeleeEnemyScript>().enabled = true;
+                    MeleeEnemyScript mel = enemy.GetComponent<MeleeEnemyScript>();
+                    if(mel != null)
+                        mel.enabled = true;
+           
                 }
                 GameObject.Find("Enemyspawner").GetComponent<EnemySpawnerScript>().enabled = true;
             }

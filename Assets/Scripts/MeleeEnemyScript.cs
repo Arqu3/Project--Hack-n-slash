@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using UnityEngine.UI;
 public class MeleeEnemyScript : MonoBehaviour {
 
     public Transform target;
@@ -9,11 +9,12 @@ public class MeleeEnemyScript : MonoBehaviour {
     float rotationSpeed = 3;
     float range = 10f;
     float range2 = 10f;
-    float stop = 1;
+    float stop = 1.5f;
 
     float health = 100f;
 
     bool pause = true;
+    public Text healthText;
 
     void Awake()
     {
@@ -44,6 +45,8 @@ public class MeleeEnemyScript : MonoBehaviour {
         {
             myTransform.rotation = Quaternion.Slerp(myTransform.rotation, Quaternion.LookRotation(target.position - myTransform.position), rotationSpeed * Time.deltaTime);
         }
+
+        healthText.text = "" + health;
 
         if (health <= 0)
             Destroy(gameObject);
