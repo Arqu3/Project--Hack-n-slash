@@ -49,6 +49,7 @@
      <Compile Include="Assets\Scripts\BlockScript.cs" />
      <Compile Include="Assets\Scripts\CameraScript.cs" />
      <Compile Include="Assets\Scripts\EnemySpawnerScript.cs" />
+     <Compile Include="Assets\Scripts\LookAtTheCamera.cs" />
      <Compile Include="Assets\Scripts\MeleeEnemyScript.cs" />
      <Compile Include="Assets\Scripts\PlayerScript.cs" />
      <Compile Include="Assets\Scripts\UIScript.cs" />

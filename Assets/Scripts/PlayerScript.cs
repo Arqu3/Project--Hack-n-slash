@@ -57,7 +57,7 @@ public class PlayerScript : MonoBehaviour
             if (hitCD > 0)
                 hitCD--;
             Vector3 fwd = transform.TransformDirection(Vector3.forward);
-            if (Physics.Raycast(transform.position, fwd, out hit, 3) && Input.GetMouseButton(0) && hitCD <= 0)
+            if (Physics.Raycast(transform.position, fwd, out hit, 3) && Input.GetMouseButton(0))
             {
                 hitCD = 30;
                 if (hit.collider.tag == "Enemy")
