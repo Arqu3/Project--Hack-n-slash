@@ -69,7 +69,10 @@ public class PlayerScript : MonoBehaviour
             {
                 hitCD = 30;
                 if (hit.collider.tag == "Enemy")
-                hit.collider.SendMessage("ApplyDamage", 5);
+                {
+                    hit.collider.SendMessage("ApplyDamage", 5);
+                    hit.collider.renderer.material.color = Color.red;
+                }   
             }
 
             Debug.DrawRay(transform.position, fwd * range, Color.red);

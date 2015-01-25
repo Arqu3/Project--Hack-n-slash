@@ -10,6 +10,7 @@ public class MeleeEnemyScript : MonoBehaviour {
     float range = 10f;
     float range2 = 10f;
     float stop = 1.5f;
+    bool hasTarget = false;
 
     float health = 100f;
 
@@ -33,23 +34,38 @@ public class MeleeEnemyScript : MonoBehaviour {
         if (distance <= range2 && distance >= range)
         {
             myTransform.rotation = Quaternion.Slerp(myTransform.rotation, Quaternion.LookRotation(target.position - myTransform.position), rotationSpeed * Time.deltaTime);
+            hasTarget = true;
         }
         //Move towards player
         else if (distance <= range && distance > stop)
         {
             myTransform.rotation = Quaternion.Slerp(myTransform.rotation, Quaternion.LookRotation(target.position - myTransform.position), rotationSpeed * Time.deltaTime);
             myTransform.position += myTransform.forward * speed * Time.deltaTime;
+            hasTarget = true;
         }
         //Stops when close to player
         else if (distance <= stop)
         {
             myTransform.rotation = Quaternion.Slerp(myTransform.rotation, Quaternion.LookRotation(target.position - myTransform.position), rotationSpeed * Time.deltaTime);
+            hasTarget = true;
         }
 
-        healthText.text = "" + health;
+        if (distance >= range)
+            hasTarget = false;
+
+        healthText.text = "" + health + hasTarget;
 
         if (health <= 0)
             Destroy(gameObject);
+
+        if (hasTarget == false)
+            rigidbody.constraints = RigidbodyConstraints.FreezeAll;
+
+        else if (hasTarget == true)
+        {
+            rigidbody.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+        }
+
 	}
     void ApplyDamage(float damage)
     {
