@@ -59,7 +59,6 @@ public class PlayerScript : MonoBehaviour
             else if (!hasReached && Mathf.Approximately(transform.position.magnitude, newPosition.magnitude))
                 hasReached = true;
 
-            healthText.text = "" + hitCD;
 
             //Player hit detection + damage
             if (hitCD > 0)
@@ -77,29 +76,10 @@ public class PlayerScript : MonoBehaviour
 
             Debug.DrawRay(transform.position, fwd * range, Color.red);
 
-            Movement();
+            healthText.text = "" + hitCD;
 
-            //Rotation();
         }
 	}
-    void Movement()
-    {
-        float speed = Input.GetAxis("Horizontal") * 10;
-        rigidbody.velocity = new Vector3(speed, rigidbody.velocity.y, rigidbody.velocity.z);
-        if (Input.GetKey(KeyCode.Space) == true)
-        {
-            rigidbody.AddForce(new Vector3(0, JumpForce));
-        }
-    }
-
-    void Rotation()
-    {
-        float rotationX = Input.GetAxis("Mouse X") * rotationSpeed;
-        float rotationY = Input.GetAxis("Mouse Y") * rotationSpeed;
-        rotationX *= Time.deltaTime;
-        rotationY *= Time.deltaTime;
-        transform.Rotate(rotationY, rotationX, 0);
-    }
 
     public void Pause()
     {
