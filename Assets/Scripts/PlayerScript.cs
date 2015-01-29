@@ -5,7 +5,6 @@ using UnityEngine.UI;
 public class PlayerScript : MonoBehaviour 
 {
     public float JumpForce = 8;
-	float rotationSpeed = 500f;
 
     Vector3 newPosition;
     bool hasReached = true;
@@ -76,7 +75,9 @@ public class PlayerScript : MonoBehaviour
 
             Debug.DrawRay(transform.position, fwd * range, Color.red);
 
+            //Tect display + position
             healthText.text = "" + hitCD;
+            healthText.rectTransform.anchoredPosition = new Vector2(-Screen.width / 2 - healthText.rectTransform.rect.x * 1.2f, Screen.height / 2 + healthText.rectTransform.rect.y * 1.2f);
 
         }
 	}

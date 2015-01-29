@@ -53,11 +53,12 @@ public class MeleeEnemyScript : MonoBehaviour {
         if (distance >= range)
             hasTarget = false;
 
-        healthText.text = "" + health + hasTarget;
+        healthText.text = "" + health;
 
         if (health <= 0)
             Destroy(gameObject);
 
+        //Sets physics constraints depending on hasTarget
         if (hasTarget == false)
             rigidbody.constraints = RigidbodyConstraints.FreezeAll;
 
