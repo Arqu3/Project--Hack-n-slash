@@ -56,7 +56,7 @@ public class UIScript : MonoBehaviour {
                     if (mel != null)
                         mel.enabled = false;
                 }
-                GameObject.Find("Enemyspawner").GetComponent<EnemySpawnerScript>().enabled = false;
+                GameObject.Find("Enemyspawner").GetComponent<Spawner>().enabled = false;
             }
 
             if (pauseGame == false)
@@ -72,7 +72,7 @@ public class UIScript : MonoBehaviour {
                         mel.enabled = true;
            
                 }
-                GameObject.Find("Enemyspawner").GetComponent<EnemySpawnerScript>().enabled = true;
+                GameObject.Find("Enemyspawner").GetComponent<Spawner>().enabled = true;
             }
         }
     }

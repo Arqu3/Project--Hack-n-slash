@@ -14,8 +14,7 @@ public class MeleeEnemyScript : MonoBehaviour {
 
     float health = 100f;
 
-    bool pause = true;
-    public Text healthText;
+    public Slider healthSlider;
 
     void Awake()
     {
@@ -53,7 +52,7 @@ public class MeleeEnemyScript : MonoBehaviour {
         if (distance >= range)
             hasTarget = false;
 
-        healthText.text = "" + health;
+        healthSlider.value = health;
 
         if (health <= 0)
             Destroy(gameObject);

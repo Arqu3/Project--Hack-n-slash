@@ -4,8 +4,6 @@ using UnityEngine.UI;
 
 public class PlayerScript : MonoBehaviour 
 {
-    public float JumpForce = 8;
-
     Vector3 newPosition;
     bool hasReached = true;
     public float duration = 50f;
@@ -15,9 +13,12 @@ public class PlayerScript : MonoBehaviour
 
     public LayerMask rayMask;
     RaycastHit hit;
+    RaycastHit hit2;
 
     public float range = 3.0f;
-    float hitCD = 0;
+    float hitCD = 0f;
+
+    float charge = 0f;
 
     public Text healthText;
 
@@ -30,17 +31,40 @@ public class PlayerScript : MonoBehaviour
 	{
         if (pause == false)
         {
+            if (hitCD > 0)
+                hitCD--;
+            Vector3 fwd = transform.TransformDirection(Vector3.forward);
+
             //Uses raycasthit to detect where the player is clicking and moves to that position
             if (Input.GetMouseButton(0))
             {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out hit, 1000, rayMask))
                 {
-                    if (Input.GetKey(KeyCode.LeftShift))
-                        hasReached = true;
+                    if (Physics.Raycast(transform.position, fwd, out hit2, 3))
+                    {
+                        if (hit.collider.tag == "Enemy")
+                        {
+                            hasReached = true;
+                            if (hitCD <= 0)
+                            {
+                                hitCD = 30;
+                                if (hit2.collider.tag == "Enemy")
+                                {
+                                    hit2.collider.SendMessage("ApplyDamage", 5);
+                                    hit2.collider.renderer.material.color = Color.red;
+                                }
+                            }
+                        }
+                        else if (hit.collider.tag != "Enemy")
+                            hasReached = false;
+                    }
                     else
                         hasReached = false;
 
+                    if (Input.GetKey(KeyCode.LeftShift))
+                        hasReached = true;
+                    
                     newPosition = hit.point;
                     newPosition.y = yAxis;
 
@@ -58,27 +82,26 @@ public class PlayerScript : MonoBehaviour
             else if (!hasReached && Mathf.Approximately(transform.position.magnitude, newPosition.magnitude))
                 hasReached = true;
 
-
-            //Player hit detection + damage
-            if (hitCD > 0)
-                hitCD--;
-            Vector3 fwd = transform.TransformDirection(Vector3.forward);
-            if (Physics.Raycast(transform.position, fwd, out hit, 3) && Input.GetMouseButton(0) && hitCD <= 0)
-            {
-                hitCD = 30;
-                if (hit.collider.tag == "Enemy")
-                {
-                    hit.collider.SendMessage("ApplyDamage", 5);
-                    hit.collider.renderer.material.color = Color.red;
-                }   
-            }
-
             Debug.DrawRay(transform.position, fwd * range, Color.red);
 
-            //Tect display + position
+            if (Input.GetMouseButton(1))
+            {
+                hasReached = true;
+                charge++;
+
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(ray, out hit, 1000, rayMask))
+                {
+                    //Player rotation relative to mouse click
+                    Vector3 relative = transform.InverseTransformPoint(hit.point);
+                    float angle = Mathf.Atan2(relative.x, relative.z) * Mathf.Rad2Deg;
+                    transform.Rotate(0, angle, 0);
+                }
+            }
+
+            //Text display + position
             healthText.text = "" + hitCD;
             healthText.rectTransform.anchoredPosition = new Vector2(-Screen.width / 2 - healthText.rectTransform.rect.x * 1.2f, Screen.height / 2 + healthText.rectTransform.rect.y * 1.2f);
-
         }
 	}
 

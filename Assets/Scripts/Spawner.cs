@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnemySpawnerScript : MonoBehaviour {
+public class Spawner : MonoBehaviour {
 
     public GameObject meleePrefab;
     float timer = 0f;
