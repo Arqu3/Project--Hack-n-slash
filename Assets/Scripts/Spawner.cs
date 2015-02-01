@@ -20,7 +20,6 @@ public class Spawner : MonoBehaviour {
             getCount = GameObject.FindGameObjectsWithTag("Enemy");
             count = getCount.Length;
 
-
             if (timer > 0)
                 timer--;
             if (timer <= 0 && count <= 10)

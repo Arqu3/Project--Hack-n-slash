@@ -12,12 +12,13 @@ public class MeleeEnemyScript : MonoBehaviour {
     float stop = 1.5f;
     bool hasTarget = false;
 
-    float health = 100f;
+    float health;
 
     public Slider healthSlider;
 
     void Awake()
     {
+        health = 100;
         myTransform = transform;
     }
 
@@ -27,6 +28,23 @@ public class MeleeEnemyScript : MonoBehaviour {
 	}
 	
 	void Update () 
+    {
+        Movement();
+
+        ConstraintPhysics();
+
+        healthSlider.value = health;
+
+        if (health <= 0)
+            Destroy(gameObject);
+
+	}
+    void ApplyDamage(float damage)
+    {
+        health -= damage;
+    }
+
+    void Movement()
     {
         //Enemy rotation relative to player position
         float distance = Vector3.Distance(myTransform.position, target.position);
@@ -51,12 +69,10 @@ public class MeleeEnemyScript : MonoBehaviour {
 
         if (distance >= range)
             hasTarget = false;
+    }
 
-        healthSlider.value = health;
-
-        if (health <= 0)
-            Destroy(gameObject);
-
+    void ConstraintPhysics()
+    {
         //Sets physics constraints depending on hasTarget
         if (hasTarget == false)
             rigidbody.constraints = RigidbodyConstraints.FreezeAll;
@@ -65,10 +81,5 @@ public class MeleeEnemyScript : MonoBehaviour {
         {
             rigidbody.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
         }
-
-	}
-    void ApplyDamage(float damage)
-    {
-        health -= damage;
     }
 }

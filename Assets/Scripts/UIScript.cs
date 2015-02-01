@@ -20,11 +20,6 @@ public class UIScript : MonoBehaviour {
 	void Update () 
     {
         Pause();
-        if (Input.GetKeyDown(KeyCode.Y))
-        {
-            CameraSwitch();
-            button.SetActive(true);
-        }
 	}
 
     public void CameraSwitch()
