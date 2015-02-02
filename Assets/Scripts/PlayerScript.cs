@@ -20,10 +20,11 @@ public class PlayerScript : MonoBehaviour
     Vector3 fwd;
 
     float charge = 0f;
+    float damage = 5f;
 
     public Text healthText;
     public Slider chargeBar;
-
+    
 	void Start () 
 	{
         newPosition = transform.position;
@@ -79,8 +80,16 @@ public class PlayerScript : MonoBehaviour
             }
             if (charge <= 2 && Input.GetMouseButtonUp(1))
             {
-                charge = 0;
                 //insert attack here
+                if (Physics.SphereCast(transform.position, transform.localScale.y / 2, fwd, out hit2, 3))
+                {
+                    if (hit2.collider.tag == "Enemy")
+                    {
+                        hit2.collider.SendMessage("ApplyDamage", 10 + damage * charge);
+                        Debug.Log("Dealt: " + 10 + damage * charge + " damage");
+                    }
+                }
+                charge = 0;
             }
 
             chargeBar.value = charge;
@@ -117,7 +126,7 @@ public class PlayerScript : MonoBehaviour
                     hitCD = 30;
                     if (hit2.collider.tag == "Enemy")
                     {
-                        hit2.collider.SendMessage("ApplyDamage", 5);
+                        hit2.collider.SendMessage("ApplyDamage", damage);
                         hit2.collider.renderer.material.color = Color.red;
                     }
                 }
