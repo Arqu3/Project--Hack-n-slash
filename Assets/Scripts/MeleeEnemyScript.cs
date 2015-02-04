@@ -22,12 +22,12 @@ public class MeleeEnemyScript : MonoBehaviour {
         myTransform = transform;
     }
 
-	void Start () 
+	void Start() 
     {
         target = GameObject.FindGameObjectWithTag("Player").transform;
 	}
 	
-	void Update () 
+	void Update() 
     {
         Movement();
 
@@ -37,7 +37,6 @@ public class MeleeEnemyScript : MonoBehaviour {
 
         if (health <= 0)
             Destroy(gameObject);
-
 	}
     void ApplyDamage(float damage)
     {

@@ -20,7 +20,9 @@ public class PlayerScript : MonoBehaviour
     Vector3 fwd;
 
     public float charge = 0f;
-    public float damage = 5f;
+    float damage = 5f;
+    float offset = 1.7f;
+    float radius = 1.35f;
 
     public Text healthText;
     public Slider chargeBar;
@@ -44,7 +46,7 @@ public class PlayerScript : MonoBehaviour
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out hit, 1000, rayMask))
                 {
-                    DealDamage();
+                    LeftClick();
 
                     if (Input.GetKey(KeyCode.LeftShift))
                         hasReached = true;
@@ -56,51 +58,23 @@ public class PlayerScript : MonoBehaviour
                 }
             }
 
-            //If the player hasn't reached its point, it moves towards it
-            if (!hasReached && !Mathf.Approximately(transform.position.magnitude, newPosition.magnitude))
-                transform.position = Vector3.Lerp(transform.position, newPosition, 1 / (duration * (Vector3.Distance(transform.position, newPosition))));
-
-            //Stop the player movement when point is reached
-            else if (!hasReached && Mathf.Approximately(transform.position.magnitude, newPosition.magnitude))
-                hasReached = true;
+            Move();
 
             Debug.DrawRay(transform.position, fwd * range, Color.red);
 
-            if (Input.GetMouseButton(1))
+            if (Input.GetMouseButton(1) && !Input.GetMouseButton(0))
             {
-                hasReached = true;
-
-                if (charge < 1.99f)
-                charge += 0.04f;
-
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(ray, out hit, 1000, rayMask))
-                {
-                    Rotate();
-                }
+                RightClickHold();
             }
-            if (charge <= 2 && Input.GetMouseButtonUp(1))
+            if (charge <= 2.1f && Input.GetMouseButtonUp(1))
             {
-                //insert attack here
-                Collider[] colliders = Physics.OverlapSphere(transform.position + transform.forward * 2.0f, 1.0f);
-                int nrenemies = 0;
-                for (int i = 0; i < colliders.Length; i++)
-                {
-                    if (colliders[i].tag == "Enemy")
-                    {
-                        nrenemies++;
-                        colliders[i].SendMessage("ApplyDamage", damage * charge);
-                        Debug.Log("Dealt: " + damage * charge + " damage");
-                    }
-                }
-                Debug.Log(nrenemies);
-                charge = 0;
+                RightClickRelease();
             }
             
             chargeBar.value = charge;
 
             //Text display + position
-            healthText.text = "" + hitCD + "" + charge;
+            healthText.text = "" + hitCD + "\n" + charge;
             healthText.rectTransform.anchoredPosition = new Vector2(-Screen.width / 2 - healthText.rectTransform.rect.x * 1.2f, Screen.height / 2 + healthText.rectTransform.rect.y * 1.2f);
         }
 	}
@@ -118,7 +92,7 @@ public class PlayerScript : MonoBehaviour
         transform.Rotate(0, angle, 0);
     }
 
-    void DealDamage()
+    void LeftClick()
     {
         //Player damage
         if (Physics.Raycast(transform.position, fwd, out hit2, 3))
@@ -126,13 +100,14 @@ public class PlayerScript : MonoBehaviour
             if (hit.collider.tag == "Enemy")
             {
                 hasReached = true;
-                if (hitCD <= 0)
+                if (hitCD <= 0 && charge <= 0)
                 {
                     hitCD = 30;
                     if (hit2.collider.tag == "Enemy")
                     {
                         hit2.collider.SendMessage("ApplyDamage", damage);
                         hit2.collider.renderer.material.color = Color.red;
+                        Debug.Log("Dealt: " + damage + " damage");
                     }
                 }
             }
@@ -142,8 +117,48 @@ public class PlayerScript : MonoBehaviour
         else
             hasReached = false;
     }
+
+    void RightClickHold()
+    {
+        hasReached = true;
+
+        if (charge < 2.0f)
+            charge += 0.03f;
+
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out hit, 1000, rayMask))
+        {
+            Rotate();
+        }
+    }
+
+    void RightClickRelease()
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position + transform.forward * offset, radius);
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            if (colliders[i].tag == "Enemy")
+            {
+                colliders[i].SendMessage("ApplyDamage", damage * charge);
+                Debug.Log("Dealt: " + damage * charge + " damage");
+            }
+        }
+        charge = 0;
+    }
+
+    void Move()
+    {
+        //If the player hasn't reached its point, it moves towards it
+        if (!hasReached && !Mathf.Approximately(transform.position.magnitude, newPosition.magnitude))
+            transform.position = Vector3.Lerp(transform.position, newPosition, 1 / (duration * (Vector3.Distance(transform.position, newPosition))));
+
+        //Stop the player movement when point is reached
+        else if (!hasReached && Mathf.Approximately(transform.position.magnitude, newPosition.magnitude))
+            hasReached = true;
+    }
+
     void OnDrawGizmos()
     {
-        Gizmos.DrawSphere(transform.position + transform.forward * 2.0f, 1.0f);
+        Gizmos.DrawSphere(transform.position + transform.forward * offset, radius);
     }
 }
