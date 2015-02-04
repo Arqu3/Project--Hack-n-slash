@@ -55,6 +55,14 @@ public class PlayerScript : MonoBehaviour
                     Rotate();
                 }
             }
+            //foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
+            //{
+            //    if (hit.collider.tag == "Enemy" && !hasReached)
+            //    {
+            //        newPosition = gameObject.GetComponent<MeleeEnemyScript>().transform.position;
+            //    }
+            //}
+
             //If the player hasn't reached its point, it moves towards it
             if (!hasReached && !Mathf.Approximately(transform.position.magnitude, newPosition.magnitude))
                 transform.position = Vector3.Lerp(transform.position, newPosition, 1 / (duration * (Vector3.Distance(transform.position, newPosition))));
