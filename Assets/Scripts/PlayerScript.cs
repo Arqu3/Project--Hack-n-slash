@@ -16,11 +16,11 @@ public class PlayerScript : MonoBehaviour
     RaycastHit hit2;
 
     public float range = 3.0f;
-    float hitCD = 0f;
+    float hitCD = 0.0f;
     Vector3 fwd;
 
-    float charge = 0f;
-    float damage = 5f;
+    public float charge = 0f;
+    public float damage = 5f;
 
     public Text healthText;
     public Slider chargeBar;
@@ -55,13 +55,6 @@ public class PlayerScript : MonoBehaviour
                     Rotate();
                 }
             }
-            //foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
-            //{
-            //    if (hit.collider.tag == "Enemy" && !hasReached)
-            //    {
-            //        newPosition = gameObject.GetComponent<MeleeEnemyScript>().transform.position;
-            //    }
-            //}
 
             //If the player hasn't reached its point, it moves towards it
             if (!hasReached && !Mathf.Approximately(transform.position.magnitude, newPosition.magnitude))
@@ -78,7 +71,7 @@ public class PlayerScript : MonoBehaviour
                 hasReached = true;
 
                 if (charge < 1.99f)
-                charge += 0.02f;
+                charge += 0.04f;
 
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out hit, 1000, rayMask))
@@ -89,17 +82,21 @@ public class PlayerScript : MonoBehaviour
             if (charge <= 2 && Input.GetMouseButtonUp(1))
             {
                 //insert attack here
-                if (Physics.SphereCast(transform.position, transform.localScale.y / 2, fwd, out hit2, 3))
+                Collider[] colliders = Physics.OverlapSphere(transform.position + transform.forward * 2.0f, 1.0f);
+                int nrenemies = 0;
+                for (int i = 0; i < colliders.Length; i++)
                 {
-                    if (hit2.collider.tag == "Enemy")
+                    if (colliders[i].tag == "Enemy")
                     {
-                        hit2.collider.SendMessage("ApplyDamage", 10 + damage * charge);
-                        Debug.Log("Dealt: " + 10 + damage * charge + " damage");
+                        nrenemies++;
+                        colliders[i].SendMessage("ApplyDamage", damage * charge);
+                        Debug.Log("Dealt: " + damage * charge + " damage");
                     }
                 }
+                Debug.Log(nrenemies);
                 charge = 0;
             }
-
+            
             chargeBar.value = charge;
 
             //Text display + position
@@ -144,5 +141,9 @@ public class PlayerScript : MonoBehaviour
         }
         else
             hasReached = false;
+    }
+    void OnDrawGizmos()
+    {
+        Gizmos.DrawSphere(transform.position + transform.forward * 2.0f, 1.0f);
     }
 }
