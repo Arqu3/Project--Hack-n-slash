@@ -26,6 +26,12 @@ public class PlayerScript : MonoBehaviour
 
     public Text healthText;
     public Slider chargeBar;
+    public NavMeshAgent myAgent;
+
+    void Awake()
+    {
+        myAgent = GetComponent<NavMeshAgent>();
+    }
     
 	void Start () 
 	{
@@ -62,7 +68,7 @@ public class PlayerScript : MonoBehaviour
 
             Debug.DrawRay(transform.position, fwd * range, Color.red);
 
-            if (Input.GetMouseButton(1) && !Input.GetMouseButton(0))
+            if (Input.GetMouseButton(1))
             {
                 RightClickHold();
             }
@@ -150,7 +156,7 @@ public class PlayerScript : MonoBehaviour
     {
         //If the player hasn't reached its point, it moves towards it
         if (!hasReached && !Mathf.Approximately(transform.position.magnitude, newPosition.magnitude))
-            transform.position = Vector3.Lerp(transform.position, newPosition, 1 / (duration * (Vector3.Distance(transform.position, newPosition))));
+        transform.position = Vector3.Lerp(transform.position, newPosition, 1 / (duration * (Vector3.Distance(transform.position, newPosition))));
 
         //Stop the player movement when point is reached
         else if (!hasReached && Mathf.Approximately(transform.position.magnitude, newPosition.magnitude))
