@@ -17,15 +17,18 @@ public class PlayerScript : MonoBehaviour
 
     public float range = 3.0f;
     float hitCD = 0.0f;
+    float hitCD2 = 0.0f;
     Vector3 fwd;
 
-    public float charge = 0f;
+    float charge = 0f;
     float damage = 5f;
     float offset = 1.7f;
     float radius = 1.35f;
 
     public Text healthText;
     public Slider chargeBar;
+    public Slider cooldown1;
+
     public NavMeshAgent myAgent;
 
     void Awake()
@@ -44,6 +47,8 @@ public class PlayerScript : MonoBehaviour
         {
             if (hitCD > 0)
                 hitCD--;
+            if (hitCD2 > 0)
+                hitCD2--;
             fwd = transform.TransformDirection(Vector3.forward);
 
             //Uses raycasthit to detect where the player is clicking and moves to that position
@@ -68,19 +73,23 @@ public class PlayerScript : MonoBehaviour
 
             Debug.DrawRay(transform.position, fwd * range, Color.red);
 
-            if (Input.GetMouseButton(1))
+            if (hitCD2 <= 0)
             {
-                RightClickHold();
-            }
-            if (charge <= 2.1f && Input.GetMouseButtonUp(1))
-            {
-                RightClickRelease();
+                if (Input.GetMouseButton(1))
+                {
+                    RightClickHold();
+                }
+                if (Input.GetMouseButtonUp(1))
+                {
+                    RightClickRelease();
+                }
             }
             
             chargeBar.value = charge;
+            cooldown1.value = hitCD;
 
             //Text display + position
-            healthText.text = "" + hitCD + "\n" + charge;
+            healthText.text = "Leftclick cooldown: " + hitCD + "\n" + "Rightclick cooldown: " + hitCD2;
             healthText.rectTransform.anchoredPosition = new Vector2(-Screen.width / 2 - healthText.rectTransform.rect.x * 1.2f, Screen.height / 2 + healthText.rectTransform.rect.y * 1.2f);
         }
 	}
@@ -140,13 +149,16 @@ public class PlayerScript : MonoBehaviour
 
     void RightClickRelease()
     {
+        //Hits all enemies in a sphere using collider array 
         Collider[] colliders = Physics.OverlapSphere(transform.position + transform.forward * offset, radius);
+        float totalDamage = damage * charge;
+        hitCD2 = 100;
         for (int i = 0; i < colliders.Length; i++)
         {
             if (colliders[i].tag == "Enemy")
             {
-                colliders[i].SendMessage("ApplyDamage", damage * charge);
-                Debug.Log("Dealt: " + damage * charge + " damage");
+                colliders[i].SendMessage("ApplyDamage", totalDamage);
+                Debug.Log("Dealt: " + totalDamage + " damage");
             }
         }
         charge = 0;
