@@ -9,8 +9,6 @@ public class PlayerScript : MonoBehaviour
     public float duration = 50f;
     float yAxis = 0.7f;
 
-    bool pause = true;
-
     public LayerMask rayMask;
     RaycastHit hit;
     RaycastHit hit2;
@@ -28,13 +26,7 @@ public class PlayerScript : MonoBehaviour
     public Text healthText;
     public Slider chargeBar;
     public Slider cooldown1;
-
-    public NavMeshAgent myAgent;
-
-    void Awake()
-    {
-        myAgent = GetComponent<NavMeshAgent>();
-    }
+    public Slider cooldown2;
     
 	void Start () 
 	{
@@ -43,61 +35,53 @@ public class PlayerScript : MonoBehaviour
 	
 	void Update () 
 	{
-        if (pause == false)
+        //Cooldown decrease
+        if (hitCD > 0)
+            hitCD--;
+        if (hitCD2 > 0)
+            hitCD2--;
+        fwd = transform.TransformDirection(Vector3.forward);
+
+        //Uses raycasthit to detect where the player is clicking and moves to that position
+        if (Input.GetMouseButton(0) && !Input.GetMouseButton(1))
         {
-            if (hitCD > 0)
-                hitCD--;
-            if (hitCD2 > 0)
-                hitCD2--;
-            fwd = transform.TransformDirection(Vector3.forward);
-
-            //Uses raycasthit to detect where the player is clicking and moves to that position
-            if (Input.GetMouseButton(0) && !Input.GetMouseButton(1))
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out hit, 1000, rayMask))
             {
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(ray, out hit, 1000, rayMask))
-                {
-                    LeftClick();
+                LeftClick();
 
-                    if (Input.GetKey(KeyCode.LeftShift))
-                        hasReached = true;
+                if (Input.GetKey(KeyCode.LeftShift))
+                    hasReached = true;
                     
-                    newPosition = hit.point;
-                    newPosition.y = yAxis;
+                newPosition = hit.point;
+                newPosition.y = yAxis;
 
-                    Rotate();
-                }
+                Rotate();
             }
-
-            Move();
-
-            Debug.DrawRay(transform.position, fwd * range, Color.red);
-
-            if (hitCD2 <= 0)
-            {
-                if (Input.GetMouseButton(1))
-                {
-                    RightClickHold();
-                }
-                if (Input.GetMouseButtonUp(1))
-                {
-                    RightClickRelease();
-                }
-            }
-            
-            chargeBar.value = charge;
-            cooldown1.value = hitCD;
-
-            //Text display + position
-            healthText.text = "Leftclick cooldown: " + hitCD + "\n" + "Rightclick cooldown: " + hitCD2;
-            healthText.rectTransform.anchoredPosition = new Vector2(-Screen.width / 2 - healthText.rectTransform.rect.x * 1.2f, Screen.height / 2 + healthText.rectTransform.rect.y * 1.2f);
         }
-	}
 
-    public void Pause()
-    {
-        pause = !pause;
-    }
+        Movement();
+        UI();
+
+        if (hitCD2 <= 0)
+        {
+            if (Input.GetMouseButton(1))
+            {
+                RightClickHold();
+            }
+            if (Input.GetMouseButtonUp(1))
+            {
+                RightClickRelease();
+            }
+        }
+
+        //Text display + position
+        healthText.text = "Leftclick cooldown: " + hitCD + "\n" + "Rightclick cooldown: " + hitCD2;
+        healthText.rectTransform.anchoredPosition = new Vector2(-Screen.width / 2 - healthText.rectTransform.rect.x * 1.2f, Screen.height / 2 + healthText.rectTransform.rect.y * 1.2f);
+
+        Debug.DrawRay(transform.position, fwd * range, Color.red);
+        
+	}
 
     void Rotate()
     {
@@ -164,7 +148,7 @@ public class PlayerScript : MonoBehaviour
         charge = 0;
     }
 
-    void Move()
+    void Movement()
     {
         //If the player hasn't reached its point, it moves towards it
         if (!hasReached && !Mathf.Approximately(transform.position.magnitude, newPosition.magnitude))
@@ -173,6 +157,32 @@ public class PlayerScript : MonoBehaviour
         //Stop the player movement when point is reached
         else if (!hasReached && Mathf.Approximately(transform.position.magnitude, newPosition.magnitude))
             hasReached = true;
+    }
+
+    void UI()
+    {
+        //Chargebar visibility
+        if (charge <= 0)
+            chargeBar.gameObject.SetActive(false);
+        else
+            chargeBar.gameObject.SetActive(true);
+
+        chargeBar.value = charge;
+        //First button
+        cooldown1.maxValue = 30;
+        cooldown1.value = hitCD;
+        if (hitCD <= 0)
+            cooldown1.fillRect.localScale = Vector3.zero;
+        else
+            cooldown1.fillRect.localScale = new Vector3(1, 1, 1);
+
+        //Second button
+        cooldown2.maxValue = 100;
+        cooldown2.value = hitCD2;
+        if (hitCD2 <= 0)
+            cooldown2.fillRect.localScale = Vector3.zero;
+        else
+            cooldown2.fillRect.localScale = new Vector3(1, 1, 1);
     }
 
     void OnDrawGizmos()
