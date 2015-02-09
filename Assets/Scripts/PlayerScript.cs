@@ -102,10 +102,9 @@ public class PlayerScript : MonoBehaviour
                 if (hitCD <= 0 && charge <= 0)
                 {
                     hitCD = 30;
-                    if (hit2.collider.tag == "Enemy")
+                    //if (hit2.collider.tag == "Enemy")
                     {
-                        hit2.collider.SendMessage("ApplyDamage", damage);
-                        hit2.collider.renderer.material.color = Color.red;
+                        hit2.collider.SendMessage("ApplyDamage", damage, SendMessageOptions.DontRequireReceiver);
                         Debug.Log("Dealt: " + damage + " damage");
                     }
                 }
@@ -139,9 +138,9 @@ public class PlayerScript : MonoBehaviour
         hitCD2 = 100;
         for (int i = 0; i < colliders.Length; i++)
         {
-            if (colliders[i].tag == "Enemy")
+            //if (colliders[i].tag == "Enemy")
             {
-                colliders[i].SendMessage("ApplyDamage", totalDamage);
+                colliders[i].SendMessage("ApplyDamage", totalDamage, SendMessageOptions.DontRequireReceiver);
                 Debug.Log("Dealt: " + totalDamage + " damage");
             }
         }
