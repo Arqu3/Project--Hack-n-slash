@@ -31,15 +31,42 @@ public class RangedEnemyScript : MonoBehaviour {
 
         if (health <= 0)
             Destroy(gameObject);
+
+        if (IsInRangeOf(target))
+            MoveTowards(target);
+        else
+        {
+            Stop();
+            RotateTowards(target);
+        }
 	}
     void ApplyDamage(float damage)
     {
         health -= damage;
     }
 
-    void Movement()
+    bool IsInRangeOf(Transform target)
     {
-        distance = Vector3.Distance(myTransform.position, target.position);
+        //Checks distance between player and enemy, returns true within given parameters
+        float distance = Vector3.Distance(transform.position, target.position);
+        return distance >= 5 && distance <= 10;
+    }
 
+    void MoveTowards(Transform target)
+    {
+        myAgent.SetDestination(target.position);
+    }
+
+    void Stop()
+    {
+        myAgent.SetDestination(myTransform.position);
+    }
+
+    void RotateTowards(Transform target)
+    {
+        //Rotates to given target
+        Vector3 direction = (target.position - transform.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(direction);
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 10);
     }
 }

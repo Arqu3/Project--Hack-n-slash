@@ -6,7 +6,7 @@ public class MeleeEnemyScript : MonoBehaviour {
 
     public Transform target;
     Transform myTransform;
-    float range = 10f;
+    public float detectRange = 10f;
     float distance;
 
     float health;
@@ -27,8 +27,12 @@ public class MeleeEnemyScript : MonoBehaviour {
 	}
 	
 	void Update() 
-    { 
-        Movement();
+    {
+        if (IsInRangeOf(target))
+            MoveTowards(target);
+        else
+            Stop();
+
         healthSlider.value = health;
 
         if (health <= 0)
@@ -38,16 +42,17 @@ public class MeleeEnemyScript : MonoBehaviour {
     {
         health -= damage;
     }
-
-    void Movement()
+    bool IsInRangeOf(Transform target)
     {
-        distance = Vector3.Distance(myTransform.position, target.position);
-
-        if (distance <= range)
-        {
-            myAgent.SetDestination(target.position);
-        }
-        else
-            myAgent.SetDestination(myTransform.position);
+        float distance = Vector3.Distance(transform.position, target.position);
+        return distance <= detectRange;
+    }
+    void MoveTowards(Transform target)
+    {
+        myAgent.SetDestination(target.position);
+    }
+    void Stop()
+    {
+        myAgent.SetDestination(myTransform.position);
     }
 }
