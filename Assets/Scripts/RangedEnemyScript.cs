@@ -6,6 +6,7 @@ public class RangedEnemyScript : MonoBehaviour {
 
     public Transform target;
     Transform myTransform;
+    float distance;
 
     public NavMeshAgent myAgent;
     public Slider healthSlider;
@@ -27,11 +28,18 @@ public class RangedEnemyScript : MonoBehaviour {
 	void Update() 
     {
         healthSlider.value = health;
+
         if (health <= 0)
             Destroy(gameObject);
 	}
     void ApplyDamage(float damage)
     {
         health -= damage;
+    }
+
+    void Movement()
+    {
+        distance = Vector3.Distance(myTransform.position, target.position);
+
     }
 }
