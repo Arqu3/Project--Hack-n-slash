@@ -37,9 +37,9 @@ public class PlayerScript : MonoBehaviour
 	{
         //Cooldown decrease
         if (hitCD > 0)
-            hitCD--;
+            hitCD -= 60 * Time.deltaTime;
         if (hitCD2 > 0)
-            hitCD2--;
+            hitCD2 -= 60 * Time.deltaTime;
         fwd = transform.TransformDirection(Vector3.forward);
 
         //Uses raycasthit to detect where the player is clicking and moves to that position
@@ -55,10 +55,11 @@ public class PlayerScript : MonoBehaviour
                     
                 newPosition = hit.point;
                 newPosition.y = yAxis;
-
-                Rotate();
             }
         }
+
+        if (hasReached == false)
+            Rotate(); 
 
         Movement();
         UI();
@@ -87,7 +88,7 @@ public class PlayerScript : MonoBehaviour
     {
         //Player rotation relative to mouse click
         Vector3 relative = transform.InverseTransformPoint(hit.point);
-        float angle = Mathf.Atan2(relative.x, relative.z) * Mathf.Rad2Deg;
+        float angle = Mathf.Atan2(relative.x, relative.z) * Mathf.Rad2Deg * Time.deltaTime * 20;
         transform.Rotate(0, angle, 0);
     }
 
@@ -121,7 +122,7 @@ public class PlayerScript : MonoBehaviour
         hasReached = true;
 
         if (charge < 2.0f)
-            charge += 0.03f;
+            charge += 3 * Time.deltaTime;
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out hit, 1000, rayMask))
@@ -151,7 +152,7 @@ public class PlayerScript : MonoBehaviour
     {
         //If the player hasn't reached its point, it moves towards it
         if (!hasReached && !Mathf.Approximately(transform.position.magnitude, newPosition.magnitude))
-        transform.position = Vector3.Lerp(transform.position, newPosition, 1 / (duration * (Vector3.Distance(transform.position, newPosition))));
+        transform.position = Vector3.Lerp(transform.position, newPosition, 1 / (duration * (Vector3.Distance(transform.position, newPosition))) * Time.deltaTime);
 
         //Stop the player movement when point is reached
         else if (!hasReached && Mathf.Approximately(transform.position.magnitude, newPosition.magnitude))

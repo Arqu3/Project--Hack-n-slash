@@ -29,7 +29,7 @@ public class UIScript : MonoBehaviour {
         if (pauseGame == true)
         {
             //Pauses the game --ENTER ALL SCRIPTS TO DISABLE HERE--
-            Time.timeScale = 0.00001f;
+            Time.timeScale = 0.0001f;
             pauseGame = true;
             GameObject.Find("Player").GetComponent<PlayerScript>().enabled = false;
             foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
@@ -72,5 +72,11 @@ public class UIScript : MonoBehaviour {
     public void Exit()
     {
         Application.Quit();
+    }
+    void OnLevelWasLoaded(int level)
+    {
+        if (level == 1)
+            Time.timeScale = 1;
+        Debug.Log("Loaded level: " + level);
     }
 }
