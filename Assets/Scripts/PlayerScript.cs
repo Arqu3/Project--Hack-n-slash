@@ -52,6 +52,8 @@ public class PlayerScript : MonoBehaviour
 
                 if (Input.GetKey(KeyCode.LeftShift))
                     hasReached = true;
+
+                Rotate();
                     
                 newPosition = hit.point;
                 newPosition.y = yAxis;

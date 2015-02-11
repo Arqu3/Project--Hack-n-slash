@@ -75,8 +75,10 @@ public class UIScript : MonoBehaviour {
     }
     void OnLevelWasLoaded(int level)
     {
-        if (level == 1)
+        if (level != 0)
+        {
             Time.timeScale = 1;
-        Debug.Log("Loaded level: " + level);
+            Debug.Log("Loaded level: " + level);
+        }
     }
 }
