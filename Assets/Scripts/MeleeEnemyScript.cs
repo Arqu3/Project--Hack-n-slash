@@ -16,7 +16,7 @@ public class MeleeEnemyScript : MonoBehaviour {
     public NavMeshAgent myAgent;
     void Awake()
     {
-        health = 100;
+        health = 100.0f;
         myTransform = transform;
         myAgent = GetComponent<NavMeshAgent>();
     }
@@ -44,6 +44,7 @@ public class MeleeEnemyScript : MonoBehaviour {
     }
     bool IsInRangeOf(Transform target)
     {
+        //Returns true if close enough to player
         float distance = Vector3.Distance(transform.position, target.position);
         return distance <= detectRange;
     }

@@ -13,9 +13,12 @@ public class RangedEnemyScript : MonoBehaviour {
 
     float health;
 
+    public GameObject bulletPrefab;
+    float timer = 0.0f;
+
     void Awake()
     {
-        health = 100;
+        health = 100.0f;
         myTransform = transform;
         myAgent = GetComponent<NavMeshAgent>();
     }
@@ -29,6 +32,9 @@ public class RangedEnemyScript : MonoBehaviour {
     {
         healthSlider.value = health;
 
+        if (timer > 0)
+            timer -= 90 * Time.deltaTime;
+
         if (health <= 0)
             Destroy(gameObject);
 
@@ -36,8 +42,8 @@ public class RangedEnemyScript : MonoBehaviour {
             MoveTowards(target);
         else
         {
-            Stop();
             RotateTowards(target);
+            Stop();
         }
 	}
     void ApplyDamage(float damage)
@@ -65,8 +71,17 @@ public class RangedEnemyScript : MonoBehaviour {
     void RotateTowards(Transform target)
     {
         //Rotates to given target
+        float distance = Vector3.Distance(transform.position, target.position);
         Vector3 direction = (target.position - transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(direction);
+        if (distance <= 10)
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 10);
+    }
+
+    void Shoot(GameObject bulletPrefab)
+    {
+        GameObject bullet;
+        if (timer <= 0)
+            bullet = (GameObject)Instantiate(bulletPrefab, transform.position, transform.rotation);
     }
 }

@@ -23,13 +23,17 @@ public class PlayerScript : MonoBehaviour
     float offset = 1.7f;
     float radius = 1.35f;
 
-    public Text healthText;
+    public Text cdText;
     public Slider chargeBar;
     public Slider cooldown1;
     public Slider cooldown2;
+    public Slider healthBar;
+
+    float health;
     
 	void Start () 
 	{
+        health = 100.0f;
         newPosition = transform.position;
 	}
 	
@@ -79,8 +83,8 @@ public class PlayerScript : MonoBehaviour
         }
 
         //Text display + position
-        healthText.text = "Leftclick cooldown: " + hitCD + "\n" + "Rightclick cooldown: " + hitCD2;
-        healthText.rectTransform.anchoredPosition = new Vector2(-Screen.width / 2 - healthText.rectTransform.rect.x * 1.2f, Screen.height / 2 + healthText.rectTransform.rect.y * 1.2f);
+        cdText.text = "Leftclick cooldown: " + hitCD + "\n" + "Rightclick cooldown: " + hitCD2;
+        cdText.rectTransform.anchoredPosition = new Vector2(-Screen.width / 2 - cdText.rectTransform.rect.x * 1.2f, Screen.height / 2 + cdText.rectTransform.rect.y * 1.2f);
 
         Debug.DrawRay(transform.position, fwd * range, Color.red);
         
@@ -163,6 +167,10 @@ public class PlayerScript : MonoBehaviour
 
     void UI()
     {
+        //Healthbar
+        healthBar.maxValue = 100;
+        healthBar.value = health;
+
         //Chargebar visibility
         if (charge <= 0)
             chargeBar.gameObject.SetActive(false);
@@ -170,6 +178,7 @@ public class PlayerScript : MonoBehaviour
             chargeBar.gameObject.SetActive(true);
 
         chargeBar.value = charge;
+
         //First button
         cooldown1.maxValue = 30;
         cooldown1.value = hitCD;
@@ -185,6 +194,11 @@ public class PlayerScript : MonoBehaviour
             cooldown2.fillRect.localScale = Vector3.zero;
         else
             cooldown2.fillRect.localScale = new Vector3(1, 1, 1);
+    }
+
+    void ApplyDamage(float damage)
+    {
+        health -= damage;
     }
 
     void OnDrawGizmos()
