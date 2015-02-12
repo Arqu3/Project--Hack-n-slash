@@ -31,13 +31,13 @@ public class UIScript : MonoBehaviour {
             //Pauses the game --ENTER ALL SCRIPTS TO DISABLE HERE--
             Time.timeScale = 0.0001f;
             pauseGame = true;
-            GameObject.Find("Player").GetComponent<PlayerScript>().enabled = false;
-            foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
-            {
-                MeleeEnemyScript mel = enemy.GetComponent<MeleeEnemyScript>();
-                if (mel != null)
-                    mel.enabled = false;
-            }
+            //GameObject.Find("Player").GetComponent<PlayerScript>().enabled = false;
+            //foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
+            //{
+            //    MeleeEnemyScript mel = enemy.GetComponent<MeleeEnemyScript>();
+            //    if (mel != null)
+            //        mel.enabled = false;
+            //}
             GameObject.Find("Enemyspawner").GetComponent<Spawner>().enabled = false;
 
             //Activate pause canvas
@@ -47,16 +47,16 @@ public class UIScript : MonoBehaviour {
         if (pauseGame == false)
         {
             //Unpauses the game --MAKE SURE ALL SCRIPTS ARE RE-ENABLED HERE--
-            Time.timeScale = 1f;
+            Time.timeScale = 1.0f;
             pauseGame = false;
-            GameObject.Find("Player").GetComponent<PlayerScript>().enabled = true;
-            foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
-            {
-                MeleeEnemyScript mel = enemy.GetComponent<MeleeEnemyScript>();
-                if(mel != null)
-                    mel.enabled = true;
-           
-            }
+            //GameObject.Find("Player").GetComponent<PlayerScript>().enabled = true;
+            //foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
+            //{
+            //    MeleeEnemyScript mel = enemy.GetComponent<MeleeEnemyScript>();
+            //    if (mel != null)
+            //        mel.enabled = true;
+
+            //}
             GameObject.Find("Enemyspawner").GetComponent<Spawner>().enabled = true;
 
             //Deactivate pause canvas
@@ -73,11 +73,12 @@ public class UIScript : MonoBehaviour {
     {
         Application.Quit();
     }
+
     void OnLevelWasLoaded(int level)
     {
         if (level != 0)
         {
-            Time.timeScale = 1;
+            Time.timeScale = 1.0f;
             Debug.Log("Loaded level: " + level);
         }
     }

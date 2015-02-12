@@ -4,20 +4,21 @@ using System.Collections;
 public class BulletScript : MonoBehaviour {
 
 	void Start () 
-    {
-	
+	{
 	}
 	
 	void Update () 
-    {
-        Destroy(gameObject, 5);
+	{
+        //If the bullet would not hit anything for x sec, remove it
+		Destroy(gameObject, 4);
 	}
-    void OnCollisionEnter(Collision col)
-    {
-        if (col.gameObject.tag == "Player" || col.gameObject.tag == "Wall")
-            Destroy(gameObject);
-
-        if (col.gameObject.tag == "Player")
-            col.gameObject.SendMessage("ApplyDamage", 10, SendMessageOptions.DontRequireReceiver);
-    }
+	void OnCollisionEnter(Collision col)
+	{
+        //Removes bullet on impact
+		if (col.gameObject.tag == "Player" || col.gameObject.tag == "Wall")
+			Destroy(gameObject);
+        //If the bullet hit the player, deal damage
+		if (col.gameObject.tag == "Player")
+			col.gameObject.SendMessage("ApplyDamage", 10, SendMessageOptions.DontRequireReceiver);
+	}
 }

@@ -4,6 +4,7 @@ using System.Collections;
 public class Spawner : MonoBehaviour {
 
     public GameObject meleePrefab;
+    public GameObject rangedPrefab;
     float timer = 0f;
     GameObject[] getCount;
     float count;
@@ -18,12 +19,18 @@ public class Spawner : MonoBehaviour {
         count = getCount.Length;
 
         if (timer > 0)
-            timer--;
+            timer -= 100 * Time.deltaTime;  
+
         if (timer <= 0 && count <= 10)
         {
-            timer = 50f;
-            GameObject enemy1 = (GameObject)Instantiate(meleePrefab, new Vector3(Random.Range(-20.0f, 20.0f), 0.7f, Random.Range(-20.0f, 20.0f)), Quaternion.identity);
+            AddEnemy(meleePrefab);
+            AddEnemy(rangedPrefab);
         }
-        
 	}
+
+    void AddEnemy(GameObject prefab)
+    {
+        timer = 50f;
+        GameObject enemy = (GameObject)Instantiate(prefab, new Vector3(Random.Range(-20.0f, 20.0f), 0.7f, Random.Range(-20.0f, 20.0f)), Quaternion.identity);
+    }
 }

@@ -23,17 +23,19 @@ public class PlayerScript : MonoBehaviour
     float offset = 1.7f;
     float radius = 1.35f;
 
-    public Text cdText;
+    public Text healthText;
     public Slider chargeBar;
     public Slider cooldown1;
     public Slider cooldown2;
     public Slider healthBar;
 
-    float health;
+    float currentHealth;
+    float maxHealth;
     
 	void Start () 
 	{
-        health = 100.0f;
+        maxHealth = 100.0f;
+        currentHealth = maxHealth;
         newPosition = transform.position;
 	}
 	
@@ -83,11 +85,12 @@ public class PlayerScript : MonoBehaviour
         }
 
         //Text display + position
-        cdText.text = "Leftclick cooldown: " + hitCD + "\n" + "Rightclick cooldown: " + hitCD2;
-        cdText.rectTransform.anchoredPosition = new Vector2(-Screen.width / 2 - cdText.rectTransform.rect.x * 1.2f, Screen.height / 2 + cdText.rectTransform.rect.y * 1.2f);
+        //cdText.text = "Leftclick cooldown: " + hitCD + "\n" + "Rightclick cooldown: " + hitCD2;
+        //cdText.rectTransform.anchoredPosition = new Vector2(-Screen.width / 2 - cdText.rectTransform.rect.x * 1.2f, Screen.height / 2 + cdText.rectTransform.rect.y * 1.2f);
+
+        healthText.text = currentHealth + "/" + maxHealth;
 
         Debug.DrawRay(transform.position, fwd * range, Color.red);
-        
 	}
 
     void Rotate()
@@ -145,11 +148,8 @@ public class PlayerScript : MonoBehaviour
         hitCD2 = 100;
         for (int i = 0; i < colliders.Length; i++)
         {
-            //if (colliders[i].tag == "Enemy")
-            {
-                colliders[i].SendMessage("ApplyDamage", totalDamage, SendMessageOptions.DontRequireReceiver);
-                Debug.Log("Dealt: " + totalDamage + " damage");
-            }
+            colliders[i].SendMessage("ApplyDamage", (int)totalDamage, SendMessageOptions.DontRequireReceiver);
+            Debug.Log("Dealt: " + (int)totalDamage + " damage");
         }
         charge = 0;
     }
@@ -169,7 +169,7 @@ public class PlayerScript : MonoBehaviour
     {
         //Healthbar
         healthBar.maxValue = 100;
-        healthBar.value = health;
+        healthBar.value = currentHealth;
 
         //Chargebar visibility
         if (charge <= 0)
@@ -198,7 +198,7 @@ public class PlayerScript : MonoBehaviour
 
     void ApplyDamage(float damage)
     {
-        health -= damage;
+        currentHealth -= damage;
     }
 
     void OnDrawGizmos()

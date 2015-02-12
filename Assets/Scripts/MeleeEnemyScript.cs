@@ -18,7 +18,6 @@ public class MeleeEnemyScript : MonoBehaviour {
     {
         health = 100.0f;
         myTransform = transform;
-        myAgent = GetComponent<NavMeshAgent>();
     }
 
 	void Start() 
