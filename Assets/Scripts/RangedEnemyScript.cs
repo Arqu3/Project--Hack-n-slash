@@ -32,7 +32,7 @@ public class RangedEnemyScript : MonoBehaviour {
 		healthSlider.value = health;
 
 		if (timer > 0)
-			timer -= 90 * Time.deltaTime;
+			timer -= 60 * Time.deltaTime;
 
 		if (health <= 0)
 			Destroy(gameObject);

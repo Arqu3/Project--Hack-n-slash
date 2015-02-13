@@ -8,9 +8,11 @@ public class Spawner : MonoBehaviour {
     float timer = 0f;
     GameObject[] getCount;
     float count;
+    Vector3 spawnPoint;
 
 	void Start () 
     {
+        spawnPoint = GameObject.FindGameObjectWithTag("Spawnpoint").transform.position;
 	}
 	
 	void Update () 
@@ -21,16 +23,16 @@ public class Spawner : MonoBehaviour {
         if (timer > 0)
             timer -= 100 * Time.deltaTime;  
 
-        if (timer <= 0 && count <= 10)
+        if (count <= 10)
         {
-            AddEnemy(meleePrefab);
-            AddEnemy(rangedPrefab);
+            AddEnemy(meleePrefab, spawnPoint);
+            AddEnemy(rangedPrefab, spawnPoint);
         }
 	}
 
-    void AddEnemy(GameObject prefab)
+    void AddEnemy(GameObject prefab, Vector3 relativePosition)
     {
         timer = 50f;
-        GameObject enemy = (GameObject)Instantiate(prefab, new Vector3(Random.Range(-20.0f, 20.0f), 0.7f, Random.Range(-20.0f, 20.0f)), Quaternion.identity);
+        Instantiate(prefab, new Vector3(Random.Range(relativePosition.x - 2, relativePosition.x + 2), 0.7f, Random.Range(relativePosition.z - 3, relativePosition.z + 3)), Quaternion.identity);
     }
 }
