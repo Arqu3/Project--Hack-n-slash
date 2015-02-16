@@ -31,7 +31,7 @@ public class PlayerScript : MonoBehaviour
 
     float currentHealth;
     float maxHealth;
-    
+
 	void Start () 
 	{
         maxHealth = 100.0f;
@@ -46,6 +46,7 @@ public class PlayerScript : MonoBehaviour
             hitCD -= 60 * Time.deltaTime;
         if (hitCD2 > 0)
             hitCD2 -= 60 * Time.deltaTime;
+
         fwd = transform.TransformDirection(Vector3.forward);
 
         //Uses raycasthit to detect where the player is clicking and moves to that position
@@ -60,14 +61,13 @@ public class PlayerScript : MonoBehaviour
                     hasReached = true;
 
                 Rotate();
-                    
                 newPosition = hit.point;
                 newPosition.y = yAxis;
             }
         }
 
-        if (hasReached == false)
-            Rotate(); 
+        //if (hasReached == false)
+        //    Rotate(); 
 
         Movement();
         UI();
@@ -84,20 +84,15 @@ public class PlayerScript : MonoBehaviour
             }
         }
 
-        //Text display + position
-        //cdText.text = "Leftclick cooldown: " + hitCD + "\n" + "Rightclick cooldown: " + hitCD2;
-        //cdText.rectTransform.anchoredPosition = new Vector2(-Screen.width / 2 - cdText.rectTransform.rect.x * 1.2f, Screen.height / 2 + cdText.rectTransform.rect.y * 1.2f);
-
         healthText.text = currentHealth + "/" + maxHealth;
 
         Debug.DrawRay(transform.position, fwd * range, Color.red);
 	}
-
     void Rotate()
     {
         //Player rotation relative to mouse click
         Vector3 relative = transform.InverseTransformPoint(hit.point);
-        float angle = Mathf.Atan2(relative.x, relative.z) * Mathf.Rad2Deg * Time.deltaTime * 20;
+        float angle = Mathf.Atan2(relative.x, relative.z) * Mathf.Rad2Deg * Time.deltaTime * 100;
         transform.Rotate(0, angle, 0);
     }
 
@@ -157,12 +152,22 @@ public class PlayerScript : MonoBehaviour
     void Movement()
     {
         //If the player hasn't reached its point, it moves towards it
-        if (!hasReached && !Mathf.Approximately(transform.position.magnitude, newPosition.magnitude))
-        transform.position = Vector3.Lerp(transform.position, newPosition, 1 / (duration * (Vector3.Distance(transform.position, newPosition))) * Time.deltaTime);
+        //if (!hasReached && !Mathf.Approximately(transform.position.magnitude, newPosition.magnitude))
+        //transform.position = Vector3.Lerp(transform.position, newPosition, 1 / (duration * (Vector3.Distance(transform.position, newPosition))) * Time.deltaTime);
 
         //Stop the player movement when point is reached
-        else if (!hasReached && Mathf.Approximately(transform.position.magnitude, newPosition.magnitude))
-            hasReached = true;
+        //if (!hasReached && Mathf.Approximately(transform.position.magnitude, newPosition.magnitude))
+        //    hasReached = true;
+        
+        //if (!hasReached)
+        //    rigidbody.velocity = fwd * 2;
+        //else
+        //    rigidbody.velocity = Vector3.zero;
+
+        if (Vector3.Distance(newPosition, transform.position) > 1.0f)
+            rigidbody.velocity = fwd * 5;
+        else
+            rigidbody.velocity = Vector3.zero;
     }
 
     void UI()
