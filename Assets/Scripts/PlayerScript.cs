@@ -66,9 +66,6 @@ public class PlayerScript : MonoBehaviour
             }
         }
 
-        //if (hasReached == false)
-        //    Rotate(); 
-
         Movement();
         UI();
 
@@ -107,11 +104,8 @@ public class PlayerScript : MonoBehaviour
                 if (hitCD <= 0 && charge <= 0)
                 {
                     hitCD = 30;
-                    //if (hit2.collider.tag == "Enemy")
-                    {
-                        hit2.collider.SendMessage("ApplyDamage", damage, SendMessageOptions.DontRequireReceiver);
-                        Debug.Log("Dealt: " + damage + " damage");
-                    }
+                    hit2.collider.SendMessage("ApplyDamage", damage, SendMessageOptions.DontRequireReceiver);
+                    Debug.Log("Dealt: " + damage + " damage");
                 }
             }
             else if (hit.collider.tag != "Enemy")
@@ -143,31 +137,38 @@ public class PlayerScript : MonoBehaviour
         hitCD2 = 100;
         for (int i = 0; i < colliders.Length; i++)
         {
-            colliders[i].SendMessage("ApplyDamage", (int)totalDamage, SendMessageOptions.DontRequireReceiver);
-            Debug.Log("Dealt: " + (int)totalDamage + " damage");
+            if (colliders[i].tag == "Enemy")
+            {
+                colliders[i].SendMessage("ApplyDamage", (int)totalDamage, SendMessageOptions.DontRequireReceiver);
+                Debug.Log("Dealt: " + (int)totalDamage + " damage");
+            }
         }
         charge = 0;
     }
 
     void Movement()
     {
-        //If the player hasn't reached its point, it moves towards it
-        //if (!hasReached && !Mathf.Approximately(transform.position.magnitude, newPosition.magnitude))
+        ////If the player hasn't reached its point, it moves towards it
+        //if (hasReached == false && !Mathf.Approximately(transform.position.magnitude, newPosition.magnitude))
         //transform.position = Vector3.Lerp(transform.position, newPosition, 1 / (duration * (Vector3.Distance(transform.position, newPosition))) * Time.deltaTime);
 
-        //Stop the player movement when point is reached
-        //if (!hasReached && Mathf.Approximately(transform.position.magnitude, newPosition.magnitude))
+        ////Stop the player movement when point is reached
+        //if (hasReached == false && Mathf.Approximately(transform.position.magnitude, newPosition.magnitude))
         //    hasReached = true;
-        
-        //if (!hasReached)
-        //    rigidbody.velocity = fwd * 2;
-        //else
-        //    rigidbody.velocity = Vector3.zero;
 
-        if (Vector3.Distance(newPosition, transform.position) > 1.0f)
+        if (hasReached == false && Vector3.Distance(newPosition, transform.position) > 1.0f)
+        {
             rigidbody.velocity = fwd * 5;
-        else
+            rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
+        }
+        else if (hasReached == false && Vector3.Distance(newPosition, transform.position) < 1.0f)
+            hasReached = true;
+
+        if (hasReached == true)
+        {
             rigidbody.velocity = Vector3.zero;
+            rigidbody.constraints = RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+        }
     }
 
     void UI()

@@ -8,9 +8,11 @@ public class UIScript : MonoBehaviour {
 
     GameObject pauseCanvas;
     GameObject gameCanvas;
+    GameObject FPStext;
 
 	void Start () 
     {
+        FPStext = GameObject.FindGameObjectWithTag("FPStext");
         pauseCanvas = GameObject.FindGameObjectWithTag("PauseCanvas");
         gameCanvas = GameObject.FindGameObjectWithTag("GameCanvas");
         pauseCanvas.SetActive(false);
@@ -20,6 +22,8 @@ public class UIScript : MonoBehaviour {
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         Pause();
+        if (Input.GetKeyDown(KeyCode.R))
+            ToggleFPS();
 	}
 
     public void Pause()
@@ -29,7 +33,7 @@ public class UIScript : MonoBehaviour {
         if (pauseGame == true)
         {
             //Pauses the game --ENTER ALL SCRIPTS TO DISABLE HERE--
-            Time.timeScale = 0.0001f;
+            Time.timeScale = 0.00001f;
             pauseGame = true;
             //GameObject.Find("Player").GetComponent<PlayerScript>().enabled = false;
             //foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
@@ -81,5 +85,10 @@ public class UIScript : MonoBehaviour {
             Time.timeScale = 1.0f;
             Debug.Log("Loaded level: " + level);
         }
+    }
+
+    void ToggleFPS()
+    {
+        FPStext.SetActive(!FPStext.activeSelf);
     }
 }

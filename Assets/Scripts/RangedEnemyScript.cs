@@ -30,13 +30,14 @@ public class RangedEnemyScript : MonoBehaviour {
 	void Update() 
 	{
 		healthSlider.value = health;
-
+        //Shoot timer
 		if (timer > 0)
 			timer -= 60 * Time.deltaTime;
 
 		if (health <= 0)
 			Destroy(gameObject);
 
+        //Enemy behavior
 		if (IsInRangeOf(target))
 			MoveTowards(target);
 		else
@@ -91,9 +92,9 @@ public class RangedEnemyScript : MonoBehaviour {
 		GameObject clone;
         if (timer <= 0)
         {
-            timer = 30;
+            timer = 45;
             clone = (GameObject)Instantiate(bulletPrefab, transform.position + transform.forward, transform.rotation);
-            clone.rigidbody.velocity = transform.forward * 1000 * Time.deltaTime;
+            clone.rigidbody.velocity = transform.forward * 750 * Time.deltaTime;
         }
 	}
 }

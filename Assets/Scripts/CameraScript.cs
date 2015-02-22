@@ -4,9 +4,9 @@ using System.Collections;
 public class CameraScript : MonoBehaviour {
 
     public Transform target;
-    public float distanceZ = 4.3f;
-    public float distanceY = 7.75f;
-    public float distanceX = -3.75f;
+    public float distanceZ = 6.61f;
+    public float distanceY = 10.3f;
+    public float distanceX = -5.12f;
 
 	void Start () 
 	{

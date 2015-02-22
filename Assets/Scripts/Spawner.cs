@@ -23,7 +23,7 @@ public class Spawner : MonoBehaviour {
         if (timer > 0)
             timer -= 100 * Time.deltaTime;  
 
-        if (count <= 10)
+        if (count <= 5)
         {
             AddEnemy(meleePrefab, spawnPoint);
             AddEnemy(rangedPrefab, spawnPoint);
