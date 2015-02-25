@@ -16,8 +16,15 @@ public class RangedEnemyScript : MonoBehaviour {
 	public GameObject bulletPrefab;
 	float timer = 0.0f;
 
+    RaycastHit hit;
+    Vector3 fwd;
+    Ray ray;
+    float range;
+    public LayerMask layerMask;
+
 	void Awake()
 	{
+        range = 10.0f;
 		health = 100.0f;
 		myTransform = transform;
 	}
@@ -29,6 +36,9 @@ public class RangedEnemyScript : MonoBehaviour {
 	
 	void Update() 
 	{
+        fwd = transform.forward;
+        Debug.DrawRay(transform.position, fwd * range);
+
 		healthSlider.value = health;
         //Shoot timer
 		if (timer > 0)
@@ -37,7 +47,7 @@ public class RangedEnemyScript : MonoBehaviour {
 		if (health <= 0)
 			Destroy(gameObject);
 
-        //Enemy behavior
+        //Behavior
 		if (IsInRangeOf(target))
 			MoveTowards(target);
 		else
@@ -45,8 +55,9 @@ public class RangedEnemyScript : MonoBehaviour {
 			RotateTowards(target);
 			Stop();
 		}
-        if (IsInShootRangeOf(target))
-        Shoot(bulletPrefab);
+
+        if (CanSee(target))
+            Shoot(bulletPrefab);
 	}
 	void ApplyDamage(float damage)
 	{
@@ -65,6 +76,16 @@ public class RangedEnemyScript : MonoBehaviour {
         //Checks if the enemy is close enough to shoot
         float distance = Vector3.Distance(transform.position, target.position);
         return distance <= 6;
+    }
+
+    bool CanSee(Transform target)
+    {
+        if (Physics.Raycast(transform.position, fwd, out hit, range, layerMask))
+        {
+            if(hit.collider.tag == target.tag)
+                return true;
+        }
+        return false;  
     }
 
 	void MoveTowards(Transform target)

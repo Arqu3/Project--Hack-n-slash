@@ -59,7 +59,6 @@ public class UIScript : MonoBehaviour {
             //    MeleeEnemyScript mel = enemy.GetComponent<MeleeEnemyScript>();
             //    if (mel != null)
             //        mel.enabled = true;
-
             //}
             GameObject.Find("Enemyspawner").GetComponent<Spawner>().enabled = true;
 

@@ -3,15 +3,15 @@ using System.Collections;
 
 public class LookAtTheCamera : MonoBehaviour {
 
-    public Transform camera;
+    public Transform targetCamera;
 
 	void Start () 
     {
-        camera = GameObject.Find("Player Camera").transform;
+        targetCamera = GameObject.Find("Player Camera").transform;
 	}
 	
 	void Update () 
     {
-        transform.LookAt(camera);
+        transform.LookAt(targetCamera);
 	}
 }
