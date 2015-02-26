@@ -18,7 +18,6 @@ public class RangedEnemyScript : MonoBehaviour {
 
     RaycastHit hit;
     Vector3 fwd;
-    Ray ray;
     float range;
     public LayerMask layerMask;
 

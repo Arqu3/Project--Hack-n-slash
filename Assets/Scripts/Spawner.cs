@@ -12,7 +12,7 @@ public class Spawner : MonoBehaviour {
 
 	void Start () 
     {
-        spawnPoint = GameObject.FindGameObjectWithTag("Spawnpoint").transform.position;
+        spawnPoint = GameObject.FindGameObjectWithTag("SpawnFloor").transform.position;
 	}
 	
 	void Update () 
