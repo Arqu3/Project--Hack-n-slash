@@ -28,6 +28,8 @@ public class MeleeEnemyScript : MonoBehaviour {
     GameObject mainFloor;
     GameObject spawnFloor;
 
+    Vector3 newPosition;
+
     void Awake()
     {
         currentState = State.Idle;
@@ -61,14 +63,12 @@ public class MeleeEnemyScript : MonoBehaviour {
                 break;
 
             case State.Searching:
+                Roam(mainFloor);
                 break;
         }
-
         //Behavior switching
         if (IsInRangeOf(target))
             currentState = State.Attacking;
-        else
-            currentState = State.Idle;
 
         if (IsOn(spawnFloor))
             MoveTowards(mainFloor);
@@ -76,7 +76,7 @@ public class MeleeEnemyScript : MonoBehaviour {
         if (Physics.Raycast(transform.position, down, out hit, 1))
             if (hit.collider.tag == mainFloor.tag && !IsInRangeOf(target))
                 currentState = State.Searching;
-
+        print(currentState);
         //Health
         healthSlider.value = health;
         if (health <= 0)
@@ -93,10 +93,12 @@ public class MeleeEnemyScript : MonoBehaviour {
         float distance = Vector3.Distance(transform.position, target.transform.position);
         return distance <= detectRange;
     }
+
     void MoveTowards(GameObject target)
     {
         myAgent.SetDestination(target.transform.position);
     }
+
     void Stop()
     {
         myAgent.SetDestination(myTransform.position);
@@ -104,6 +106,7 @@ public class MeleeEnemyScript : MonoBehaviour {
 
     bool IsOn(GameObject floor)
     {
+        //Checks what floor the object is over
         if (Physics.Raycast(transform.position, down, out hit, 1))
         {
             if (hit.collider.tag == floor.tag)
@@ -114,6 +117,13 @@ public class MeleeEnemyScript : MonoBehaviour {
 
     void Roam(GameObject area)
     {
-        //Insert roam logic
+        //Roams given area depending on size
+        float distance = Vector3.Distance(transform.position, newPosition);
+        if (distance <= 2.0f)
+        {
+            newPosition = new Vector3(Random.Range(area.renderer.bounds.min.x, area.renderer.bounds.max.x), 0.7f, Random.Range(area.renderer.bounds.min.z, area.renderer.bounds.max.z));
+        }
+        myAgent.SetDestination(newPosition);
+        print(distance);
     }
 }
