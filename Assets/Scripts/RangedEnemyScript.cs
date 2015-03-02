@@ -35,6 +35,8 @@ public class RangedEnemyScript : MonoBehaviour {
 	
 	void Update() 
 	{
+        Handler.Kill(gameObject);
+
         fwd = transform.forward;
         Debug.DrawRay(transform.position, fwd * range);
 

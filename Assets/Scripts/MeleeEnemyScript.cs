@@ -63,20 +63,21 @@ public class MeleeEnemyScript : MonoBehaviour {
                 break;
 
             case State.Searching:
-                Roam(mainFloor);
+                Handler.Roam(myAgent, mainFloor, myTransform);
                 break;
         }
         //Behavior switching
         if (IsInRangeOf(target))
             currentState = State.Attacking;
 
-        if (IsOn(spawnFloor))
+        //if (IsOn(spawnFloor))
+        if (Handler.IsOn(spawnFloor, myTransform, hit))
             MoveTowards(mainFloor);
 
         if (Physics.Raycast(transform.position, down, out hit, 1))
             if (hit.collider.tag == mainFloor.tag && !IsInRangeOf(target))
                 currentState = State.Searching;
-        print(currentState);
+
         //Health
         healthSlider.value = health;
         if (health <= 0)
@@ -115,15 +116,15 @@ public class MeleeEnemyScript : MonoBehaviour {
         return false;
     }
 
-    void Roam(GameObject area)
+     void Roam(GameObject area)
     {
         //Roams given area depending on size
-        float distance = Vector3.Distance(transform.position, newPosition);
+        float distance = Vector3.Distance(myTransform.position, newPosition);
         if (distance <= 2.0f)
         {
             newPosition = new Vector3(Random.Range(area.renderer.bounds.min.x, area.renderer.bounds.max.x), 0.7f, Random.Range(area.renderer.bounds.min.z, area.renderer.bounds.max.z));
         }
         myAgent.SetDestination(newPosition);
-        print(distance);
     }
+
 }
