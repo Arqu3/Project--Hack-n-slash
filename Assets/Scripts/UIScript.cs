@@ -10,7 +10,7 @@ public class UIScript : MonoBehaviour {
     GameObject gameCanvas;
     GameObject FPStext;
 
-	void Start () 
+	void Start() 
     {
         FPStext = GameObject.FindGameObjectWithTag("FPStext");
         pauseCanvas = GameObject.FindGameObjectWithTag("PauseCanvas");

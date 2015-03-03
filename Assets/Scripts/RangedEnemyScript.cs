@@ -6,10 +6,10 @@ public class RangedEnemyScript : MonoBehaviour {
 
 	public Transform target;
 	Transform myTransform;
-	float distance;
 
 	public NavMeshAgent myAgent;
 	public Slider healthSlider;
+    Vector3 newPosition;
 
 	float health;
 
@@ -21,8 +21,20 @@ public class RangedEnemyScript : MonoBehaviour {
     float range;
     public LayerMask layerMask;
 
+    GameObject mainFloor;
+    GameObject spawnFloor;
+
+    enum State
+    {
+        Idle,
+        Searching,
+        Attacking
+    }
+    State currentState;
+
 	void Awake()
 	{
+        currentState = State.Idle;
         range = 10.0f;
 		health = 100.0f;
 		myTransform = transform;
@@ -30,17 +42,34 @@ public class RangedEnemyScript : MonoBehaviour {
 
 	void Start() 
 	{
-		target = GameObject.FindGameObjectWithTag("Player").transform;	    
+		target = GameObject.FindGameObjectWithTag("Player").transform;
+        mainFloor = GameObject.FindGameObjectWithTag("Floor1");
+        spawnFloor = GameObject.FindGameObjectWithTag("SpawnFloor");
 	}
 	
 	void Update() 
 	{
-        Handler.Kill(gameObject);
-
         fwd = transform.forward;
         Debug.DrawRay(transform.position, fwd * range);
 
 		healthSlider.value = health;
+
+        //Behavior code
+        switch (currentState)
+        {
+            case State.Idle:
+                Stop();
+                break;
+
+            case State.Attacking:
+                MoveTowards(target);
+                break;
+
+            case State.Searching:
+                Roam(mainFloor);
+                break;
+        }
+
         //Shoot timer
 		if (timer > 0)
 			timer -= 60 * Time.deltaTime;
@@ -81,6 +110,7 @@ public class RangedEnemyScript : MonoBehaviour {
 
     bool CanSee(Transform target)
     {
+        //Checks if enemy can see player via raycasting
         if (Physics.Raycast(transform.position, fwd, out hit, range, layerMask))
         {
             if(hit.collider.tag == target.tag)
@@ -111,6 +141,7 @@ public class RangedEnemyScript : MonoBehaviour {
 
 	void Shoot(GameObject bulletPrefab)
 	{
+        //Shoots clone, timer sets cooldown
 		GameObject clone;
         if (timer <= 0)
         {
@@ -119,4 +150,15 @@ public class RangedEnemyScript : MonoBehaviour {
             clone.rigidbody.velocity = transform.forward * 750 * Time.deltaTime;
         }
 	}
+
+    void Roam(GameObject area)
+    {
+        //Roams given area depending on size
+        float distance = Vector3.Distance(myTransform.position, newPosition);
+        if (distance <= 2.0f)
+        {
+            newPosition = new Vector3(Random.Range(area.renderer.bounds.min.x, area.renderer.bounds.max.x), 0.7f, Random.Range(area.renderer.bounds.min.z, area.renderer.bounds.max.z));
+        }
+        myAgent.SetDestination(newPosition);
+    }
 }

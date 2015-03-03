@@ -71,13 +71,11 @@ public class MeleeEnemyScript : MonoBehaviour {
         if (IsInRangeOf(target))
             currentState = State.Attacking;
 
-        //if (IsOn(spawnFloor))
         if (Handler.IsOn(spawnFloor, myTransform, hit))
             MoveTowards(mainFloor);
 
-        if (Physics.Raycast(transform.position, down, out hit, 1))
-            if (hit.collider.tag == mainFloor.tag && !IsInRangeOf(target))
-                currentState = State.Searching;
+        if (Handler.IsOn(mainFloor, myTransform, hit) && !IsInRangeOf(target))
+            currentState = State.Searching;
 
         //Health
         healthSlider.value = health;
