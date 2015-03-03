@@ -3,8 +3,8 @@ using System.Collections;
 
 public class Handler : MonoBehaviour {
 
-    static Vector3 newPosition;
     static Vector3 down = Vector3.down;
+    //static Vector3 newPosition = Vector3.zero;
 
     void Start()
     {
@@ -20,7 +20,7 @@ public class Handler : MonoBehaviour {
             Destroy(obj);
     }
 
-    public static void Roam(NavMeshAgent myAgent, GameObject area, Transform myTransform)
+    public static void Roam(NavMeshAgent myAgent, GameObject area, Transform myTransform, Vector3 newPosition)
     {
         //Roams given area depending on size
         float distance = Vector3.Distance(myTransform.position, newPosition);

@@ -63,7 +63,8 @@ public class MeleeEnemyScript : MonoBehaviour {
                 break;
 
             case State.Searching:
-                Handler.Roam(myAgent, mainFloor, myTransform);
+                //Handler.Roam(myAgent, mainFloor, myTransform, newPosition);
+                Roam(mainFloor);
                 break;
         }
         //Behavior switching
