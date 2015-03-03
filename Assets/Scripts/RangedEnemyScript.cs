@@ -9,33 +9,33 @@ public class RangedEnemyScript : MonoBehaviour {
 
 	public NavMeshAgent myAgent;
 	public Slider healthSlider;
-    Vector3 newPosition;
+	Vector3 newPosition;
 
 	float health;
 
 	public GameObject bulletPrefab;
 	float timer = 0.0f;
 
-    RaycastHit hit;
-    Vector3 fwd;
-    float range;
-    public LayerMask layerMask;
+	RaycastHit hit;
+	Vector3 fwd;
+	float range;
+	public LayerMask layerMask;
 
-    GameObject mainFloor;
-    GameObject spawnFloor;
+	GameObject mainFloor;
+	GameObject spawnFloor;
 
-    enum State
-    {
-        Idle,
-        Searching,
-        Attacking
-    }
-    State currentState;
+	enum State
+	{
+		Idle,
+		Searching,
+		Attacking
+	}
+	State currentState;
 
 	void Awake()
 	{
-        currentState = State.Idle;
-        range = 10.0f;
+		currentState = State.Idle;
+		range = 10.0f;
 		health = 100.0f;
 		myTransform = transform;
 	}
@@ -43,41 +43,41 @@ public class RangedEnemyScript : MonoBehaviour {
 	void Start() 
 	{
 		target = GameObject.FindGameObjectWithTag("Player").transform;
-        mainFloor = GameObject.FindGameObjectWithTag("Floor1");
-        spawnFloor = GameObject.FindGameObjectWithTag("SpawnFloor");
+		mainFloor = GameObject.FindGameObjectWithTag("Floor1");
+		spawnFloor = GameObject.FindGameObjectWithTag("SpawnFloor");
 	}
 	
 	void Update() 
 	{
-        fwd = transform.forward;
-        Debug.DrawRay(transform.position, fwd * range);
+		fwd = transform.forward;
+		Debug.DrawRay(transform.position, fwd * range);
 
 		healthSlider.value = health;
 
-        //Behavior code
-        switch (currentState)
-        {
-            case State.Idle:
-                Stop();
-                break;
+		//Behavior code
+		switch (currentState)
+		{
+			case State.Idle:
+				Stop();
+				break;
 
-            case State.Attacking:
-                MoveTowards(target);
-                break;
+			case State.Attacking:
+				MoveTowards(target);
+				break;
 
-            case State.Searching:
-                Roam(mainFloor);
-                break;
-        }
+			case State.Searching:
+				Roam(mainFloor);
+				break;
+		}
 
-        //Shoot timer
+		//Shoot timer
 		if (timer > 0)
 			timer -= 60 * Time.deltaTime;
 
 		if (health <= 0)
 			Destroy(gameObject);
 
-        //Behavior
+		//Behavior
 		if (IsInRangeOf(target))
 			MoveTowards(target);
 		else
@@ -86,8 +86,8 @@ public class RangedEnemyScript : MonoBehaviour {
 			Stop();
 		}
 
-        if (CanSee(target))
-            Shoot(bulletPrefab);
+		if (CanSee(target))
+			Shoot(bulletPrefab);
 	}
 	void ApplyDamage(float damage)
 	{
@@ -101,23 +101,23 @@ public class RangedEnemyScript : MonoBehaviour {
 		return distance >= 5 && distance <= 10;
 	}
 
-    bool IsInShootRangeOf(Transform target)
-    {
-        //Checks if the enemy is close enough to shoot
-        float distance = Vector3.Distance(transform.position, target.position);
-        return distance <= 6;
-    }
+	bool IsInShootRangeOf(Transform target)
+	{
+		//Checks if the enemy is close enough to shoot
+		float distance = Vector3.Distance(transform.position, target.position);
+		return distance <= 6;
+	}
 
-    bool CanSee(Transform target)
-    {
-        //Checks if enemy can see player via raycasting
-        if (Physics.Raycast(transform.position, fwd, out hit, range, layerMask))
-        {
-            if(hit.collider.tag == target.tag)
-                return true;
-        }
-        return false;  
-    }
+	bool CanSee(Transform target)
+	{
+		//Checks if enemy can see player via raycasting
+		if (Physics.Raycast(transform.position, fwd, out hit, range, layerMask))
+		{
+			if(hit.collider.tag == target.tag)
+				return true;
+		}
+		return false;  
+	}
 
 	void MoveTowards(Transform target)
 	{
@@ -141,24 +141,24 @@ public class RangedEnemyScript : MonoBehaviour {
 
 	void Shoot(GameObject bulletPrefab)
 	{
-        //Shoots clone, timer sets cooldown
+		//Shoots clone, timer sets cooldown
 		GameObject clone;
-        if (timer <= 0)
-        {
-            timer = 45;
-            clone = (GameObject)Instantiate(bulletPrefab, transform.position + transform.forward, transform.rotation);
-            clone.rigidbody.velocity = transform.forward * 750 * Time.deltaTime;
-        }
+		if (timer <= 0)
+		{
+			timer = 45;
+			clone = (GameObject)Instantiate(bulletPrefab, transform.position + transform.forward, transform.rotation);
+			clone.GetComponent<Rigidbody>().velocity = transform.forward * 750 * Time.deltaTime;
+		}
 	}
 
-    void Roam(GameObject area)
-    {
-        //Roams given area depending on size
-        float distance = Vector3.Distance(myTransform.position, newPosition);
-        if (distance <= 2.0f)
-        {
-            newPosition = new Vector3(Random.Range(area.renderer.bounds.min.x, area.renderer.bounds.max.x), 0.7f, Random.Range(area.renderer.bounds.min.z, area.renderer.bounds.max.z));
-        }
-        myAgent.SetDestination(newPosition);
-    }
+	void Roam(GameObject area)
+	{
+		//Roams given area depending on size
+		float distance = Vector3.Distance(myTransform.position, newPosition);
+		if (distance <= 2.0f)
+		{
+            newPosition = new Vector3(Random.Range(area.GetComponent<Renderer>().bounds.min.x, area.GetComponent<Renderer>().bounds.max.x), 0.7f, Random.Range(area.GetComponent<Renderer>().bounds.min.z, area.GetComponent<Renderer>().bounds.max.z));
+		}
+		myAgent.SetDestination(newPosition);
+	}
 }

@@ -26,7 +26,7 @@ public class Handler : MonoBehaviour {
         float distance = Vector3.Distance(myTransform.position, newPosition);
         if (distance <= 2.0f)
         {
-            newPosition = new Vector3(Random.Range(area.renderer.bounds.min.x, area.renderer.bounds.max.x), 0.7f, Random.Range(area.renderer.bounds.min.z, area.renderer.bounds.max.z));
+            newPosition = new Vector3(Random.Range(area.GetComponent<Renderer>().bounds.min.x, area.GetComponent<Renderer>().bounds.max.x), 0.7f, Random.Range(area.GetComponent<Renderer>().bounds.min.z, area.GetComponent<Renderer>().bounds.max.z));
         }
         myAgent.SetDestination(newPosition);
     }

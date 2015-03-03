@@ -158,16 +158,16 @@ public class PlayerScript : MonoBehaviour
 
         if (hasReached == false && Vector3.Distance(newPosition, transform.position) > 1.0f)
         {
-            rigidbody.velocity = fwd * 5;
-            rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
+            GetComponent<Rigidbody>().velocity = fwd * 5;
+            GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
         }
         else if (hasReached == false && Vector3.Distance(newPosition, transform.position) < 1.0f)
             hasReached = true;
 
         if (hasReached == true)
         {
-            rigidbody.velocity = Vector3.zero;
-            rigidbody.constraints = RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+            GetComponent<Rigidbody>().velocity = Vector3.zero;
+            GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
         }
     }
 
