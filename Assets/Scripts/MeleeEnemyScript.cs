@@ -63,7 +63,6 @@ public class MeleeEnemyScript : MonoBehaviour {
                 break;
 
             case State.Searching:
-                //Handler.Roam(myAgent, mainFloor, myTransform, newPosition);
                 Roam(mainFloor);
                 break;
         }
@@ -71,10 +70,10 @@ public class MeleeEnemyScript : MonoBehaviour {
         if (IsInRangeOf(target))
             currentState = State.Attacking;
 
-        if (Handler.IsOn(spawnFloor, myTransform, hit))
+        if (IsOn(spawnFloor))
             MoveTowards(mainFloor);
 
-        if (Handler.IsOn(mainFloor, myTransform, hit) && !IsInRangeOf(target))
+        if (IsOn(mainFloor) && !IsInRangeOf(target))
             currentState = State.Searching;
 
         //Health

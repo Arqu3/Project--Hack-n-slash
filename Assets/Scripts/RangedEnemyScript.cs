@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class RangedEnemyScript : MonoBehaviour {
 
-	public Transform target;
+	public GameObject target;
 	Transform myTransform;
 
 	public NavMeshAgent myAgent;
@@ -17,6 +17,7 @@ public class RangedEnemyScript : MonoBehaviour {
 	float timer = 0.0f;
 
 	RaycastHit hit;
+    Vector3 down;
 	Vector3 fwd;
 	float range;
 	public LayerMask layerMask;
@@ -42,13 +43,14 @@ public class RangedEnemyScript : MonoBehaviour {
 
 	void Start() 
 	{
-		target = GameObject.FindGameObjectWithTag("Player").transform;
+        target = GameObject.FindGameObjectWithTag("Player");
 		mainFloor = GameObject.FindGameObjectWithTag("Floor1");
 		spawnFloor = GameObject.FindGameObjectWithTag("SpawnFloor");
 	}
 	
 	void Update() 
 	{
+        down = Vector3.down;
 		fwd = transform.forward;
 		Debug.DrawRay(transform.position, fwd * range);
 
@@ -62,13 +64,23 @@ public class RangedEnemyScript : MonoBehaviour {
 				break;
 
 			case State.Attacking:
-				MoveTowards(target);
+                MoveTowards(target);
+                if (IsInShootRangeOf(target))
+                {
+                    RotateTowards(target);
+                    Stop();
+                }
+
+                if (CanSee(target))
+                    Shoot(bulletPrefab);
 				break;
 
 			case State.Searching:
 				Roam(mainFloor);
 				break;
 		}
+
+        Debug.Log(currentState);
 
 		//Shoot timer
 		if (timer > 0)
@@ -77,38 +89,36 @@ public class RangedEnemyScript : MonoBehaviour {
 		if (health <= 0)
 			Destroy(gameObject);
 
-		//Behavior
-		if (IsInRangeOf(target))
-			MoveTowards(target);
-		else
-		{
-			RotateTowards(target);
-			Stop();
-		}
+        //Behavior switching
+        if (IsOn(spawnFloor))
+            MoveTowards(mainFloor);
 
-		if (CanSee(target))
-			Shoot(bulletPrefab);
+        if (IsOn(mainFloor) && !IsInRangeOf(target))
+            currentState = State.Searching;
+
+        if (IsInRangeOf(target))
+            currentState = State.Attacking;
 	}
 	void ApplyDamage(float damage)
 	{
 		health -= damage;
 	}
 
-	bool IsInRangeOf(Transform target)
+	bool IsInRangeOf(GameObject target)
 	{
 		//Checks distance between player and enemy, returns true within given parameters
-		float distance = Vector3.Distance(transform.position, target.position);
-		return distance >= 5 && distance <= 10;
+		float distance = Vector3.Distance(transform.position, target.transform.position);
+		return distance <= 10;
 	}
 
-	bool IsInShootRangeOf(Transform target)
+	bool IsInShootRangeOf(GameObject target)
 	{
 		//Checks if the enemy is close enough to shoot
-		float distance = Vector3.Distance(transform.position, target.position);
+		float distance = Vector3.Distance(transform.position, target.transform.position);
 		return distance <= 6;
 	}
 
-	bool CanSee(Transform target)
+	bool CanSee(GameObject target)
 	{
 		//Checks if enemy can see player via raycasting
 		if (Physics.Raycast(transform.position, fwd, out hit, range, layerMask))
@@ -119,9 +129,9 @@ public class RangedEnemyScript : MonoBehaviour {
 		return false;  
 	}
 
-	void MoveTowards(Transform target)
+	void MoveTowards(GameObject target)
 	{
-		myAgent.SetDestination(target.position);
+		myAgent.SetDestination(target.transform.position);
 	}
 
 	void Stop()
@@ -129,11 +139,11 @@ public class RangedEnemyScript : MonoBehaviour {
 		myAgent.SetDestination(myTransform.position);
 	}
 
-	void RotateTowards(Transform target)
+	void RotateTowards(GameObject target)
 	{
 		//Rotates to given target
-		float distance = Vector3.Distance(transform.position, target.position);
-		Vector3 direction = (target.position - transform.position).normalized;
+		float distance = Vector3.Distance(transform.position, target.transform.position);
+		Vector3 direction = (target.transform.position - transform.position).normalized;
 		Quaternion lookRotation = Quaternion.LookRotation(direction);
 		if (distance <= 10)
 		transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 10);
@@ -161,4 +171,15 @@ public class RangedEnemyScript : MonoBehaviour {
 		}
 		myAgent.SetDestination(newPosition);
 	}
+
+    bool IsOn(GameObject floor)
+    {
+        //Checks what floor the object is over
+        if (Physics.Raycast(transform.position, down, out hit, 1))
+        {
+            if (hit.collider.tag == floor.tag)
+                return true;
+        }
+        return false;
+    }
 }
