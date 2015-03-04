@@ -6,8 +6,10 @@ public class Spawner : MonoBehaviour {
     public GameObject meleePrefab;
     public GameObject rangedPrefab;
     float timer = 0f;
-    GameObject[] getCount;
-    float count;
+    GameObject[] meleeList;
+    GameObject[] rangedList;
+    float countM;
+    float countR;
     Vector3 spawnPoint;
 
 	void Start () 
@@ -17,17 +19,21 @@ public class Spawner : MonoBehaviour {
 	
 	void Update () 
     {
-        getCount = GameObject.FindGameObjectsWithTag("Enemy");
-        count = getCount.Length;
+        meleeList = GameObject.FindGameObjectsWithTag("Enemy1");
+        countM = meleeList.Length;
+
+        rangedList = GameObject.FindGameObjectsWithTag("Enemy2");
+        countR = rangedList.Length;
 
         if (timer > 0)
             timer -= 100 * Time.deltaTime;  
 
-        if (count <= 1)
-        {
+        if (countM <= 1)
             AddEnemy(meleePrefab, spawnPoint);
+
+        if (countR <= 1)
             AddEnemy(rangedPrefab, spawnPoint);
-        }
+        
 	}
 
     void AddEnemy(GameObject prefab, Vector3 relativePosition)

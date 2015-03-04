@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class RangedEnemyScript : MonoBehaviour {
+public class RangedEnemyScript : Handler {
 
 	public GameObject target;
 	Transform myTransform;
@@ -54,8 +54,6 @@ public class RangedEnemyScript : MonoBehaviour {
 		fwd = transform.forward;
 		Debug.DrawRay(transform.position, fwd * range);
 
-		healthSlider.value = health;
-
 		//Behavior code
 		switch (currentState)
 		{
@@ -80,14 +78,9 @@ public class RangedEnemyScript : MonoBehaviour {
 				break;
 		}
 
-        Debug.Log(currentState);
-
 		//Shoot timer
 		if (timer > 0)
 			timer -= 60 * Time.deltaTime;
-
-		if (health <= 0)
-			Destroy(gameObject);
 
         //Behavior switching
         if (IsOn(spawnFloor))
@@ -98,6 +91,11 @@ public class RangedEnemyScript : MonoBehaviour {
 
         if (IsInRangeOf(target))
             currentState = State.Attacking;
+
+        //Health
+        healthSlider.value = health;
+        if (health <= 0)
+            Handler.Remove(gameObject, 15);
 	}
 	void ApplyDamage(float damage)
 	{

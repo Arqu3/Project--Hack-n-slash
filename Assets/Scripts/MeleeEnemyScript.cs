@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class MeleeEnemyScript : MonoBehaviour {
+public class MeleeEnemyScript : Handler {
 
     public GameObject target;
     Transform myTransform;
@@ -79,7 +79,7 @@ public class MeleeEnemyScript : MonoBehaviour {
         //Health
         healthSlider.value = health;
         if (health <= 0)
-            Destroy(gameObject);
+            Handler.Remove(gameObject, 10);
 	}
     void ApplyDamage(float damage)
     {

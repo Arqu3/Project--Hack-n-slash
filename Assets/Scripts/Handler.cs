@@ -4,7 +4,9 @@ using System.Collections;
 public class Handler : MonoBehaviour {
 
     static Vector3 down = Vector3.down;
-    //static Vector3 newPosition = Vector3.zero;
+
+    GameObject[] meleeList;
+    GameObject[] rangedList;
 
     void Start()
     {
@@ -12,23 +14,14 @@ public class Handler : MonoBehaviour {
 
     void Update()
     {
+        meleeList = GameObject.FindGameObjectsWithTag("Enemy1");
+        rangedList = GameObject.FindGameObjectsWithTag("Enemy2");
     }
 
-    public static void Kill(GameObject obj)
+    public static void Remove(GameObject obj, int score)
     {
-        if (Input.GetKeyDown(KeyCode.S))
-            Destroy(obj);
-    }
-
-    public static void Roam(NavMeshAgent myAgent, GameObject area, Transform myTransform, Vector3 newPosition)
-    {
-        //Roams given area depending on size
-        float distance = Vector3.Distance(myTransform.position, newPosition);
-        if (distance <= 2.0f)
-        {
-            newPosition = new Vector3(Random.Range(area.GetComponent<Renderer>().bounds.min.x, area.GetComponent<Renderer>().bounds.max.x), 0.7f, Random.Range(area.GetComponent<Renderer>().bounds.min.z, area.GetComponent<Renderer>().bounds.max.z));
-        }
-        myAgent.SetDestination(newPosition);
+        ScoreHandlerScript.playerScore += score;
+        Destroy(obj);
     }
 
     public static bool IsOn(GameObject floor, Transform myTransform, RaycastHit hit)
