@@ -98,7 +98,7 @@ public class PlayerScript : MonoBehaviour
         //Player damage
         if (Physics.Raycast(transform.position, fwd, out hit2, 3))
         {
-            if (hit.collider.tag == "Enemy")
+            if (hit.collider.tag == "Enemy1" || hit.collider.tag == "Enemy2")
             {
                 hasReached = true;
                 if (hitCD <= 0 && charge <= 0)
@@ -108,7 +108,7 @@ public class PlayerScript : MonoBehaviour
                     Debug.Log("Dealt: " + damage + " damage");
                 }
             }
-            else if (hit.collider.tag != "Enemy")
+            else if (hit.collider.tag != "Enemy1" || hit.collider.tag != "Enemy2")
                 hasReached = false;
         }
         else
@@ -137,7 +137,7 @@ public class PlayerScript : MonoBehaviour
         hitCD2 = 100;
         for (int i = 0; i < colliders.Length; i++)
         {
-            if (colliders[i].tag == "Enemy")
+            if (colliders[i].tag == "Enemy1" || hit.collider.tag != "Enemy2")
             {
                 colliders[i].SendMessage("ApplyDamage", (int)totalDamage, SendMessageOptions.DontRequireReceiver);
                 Debug.Log("Dealt: " + (int)totalDamage + " damage");
@@ -148,14 +148,7 @@ public class PlayerScript : MonoBehaviour
 
     void Movement()
     {
-        ////If the player hasn't reached its point, it moves towards it
-        //if (hasReached == false && !Mathf.Approximately(transform.position.magnitude, newPosition.magnitude))
-        //transform.position = Vector3.Lerp(transform.position, newPosition, 1 / (duration * (Vector3.Distance(transform.position, newPosition))) * Time.deltaTime);
-
-        ////Stop the player movement when point is reached
-        //if (hasReached == false && Mathf.Approximately(transform.position.magnitude, newPosition.magnitude))
-        //    hasReached = true;
-
+        //Player movement
         if (hasReached == false && Vector3.Distance(newPosition, transform.position) > 1.0f)
         {
             GetComponent<Rigidbody>().velocity = fwd * 5;
@@ -202,7 +195,7 @@ public class PlayerScript : MonoBehaviour
             cooldown2.fillRect.localScale = new Vector3(1, 1, 1);
     }
 
-    void ApplyDamage(float damage)
+    void TakeDamage(float damage)
     {
         currentHealth -= damage;
     }

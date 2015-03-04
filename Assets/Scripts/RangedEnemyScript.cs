@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class RangedEnemyScript : Handler {
+public class RangedEnemyScript : MonoBehaviour {
 
 	public GameObject target;
 	Transform myTransform;

@@ -22,11 +22,11 @@ public class HUDfpsscript : MonoBehaviour
     private float accum = 0; // FPS accumulated over the interval
     private int frames = 0; // Frames drawn over the interval
     private float timeleft; // Left time for current interval
-    public Text guiText;
+    public Text text;
 
     void Start()
     {
-        if (!guiText)
+        if (!text)
         {
             Debug.Log("UtilityFramesPerSecond needs a GUIText component!");
             enabled = false;
@@ -47,15 +47,15 @@ public class HUDfpsscript : MonoBehaviour
             // display two fractional digits (f2 format)
             float fps = accum / frames;
             string format = System.String.Format("{0:F2} FPS", fps);
-            guiText.text = format;
+            text.text = format;
 
             if (fps < 30)
-                guiText.material.color = Color.yellow;
+                text.material.color = Color.yellow;
             else
                 if (fps < 10)
-                    guiText.material.color = Color.red;
+                    text.material.color = Color.red;
                 else
-                    guiText.material.color = Color.green;
+                    text.material.color = Color.green;
             //	DebugConsole.Log(format,level);
             timeleft = updateInterval;
             accum = 0.0F;

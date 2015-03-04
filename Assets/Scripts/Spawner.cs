@@ -31,8 +31,8 @@ public class Spawner : MonoBehaviour {
         if (countM <= 1)
             AddEnemy(meleePrefab, spawnPoint);
 
-        if (countR <= 1)
-            AddEnemy(rangedPrefab, spawnPoint);
+        //if (countR <= 1)
+            //AddEnemy(rangedPrefab, spawnPoint);
         
 	}
 
