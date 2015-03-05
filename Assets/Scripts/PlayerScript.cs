@@ -29,8 +29,8 @@ public class PlayerScript : MonoBehaviour
     public Slider cooldown2;
     public Slider healthBar;
 
-    float currentHealth;
-    float maxHealth;
+    static float currentHealth;
+    static float maxHealth;
 
 	void Start () 
 	{

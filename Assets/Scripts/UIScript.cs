@@ -35,13 +35,6 @@ public class UIScript : MonoBehaviour {
             //Pauses the game --ENTER ALL SCRIPTS TO DISABLE HERE--
             Time.timeScale = 0.00001f;
             pauseGame = true;
-            //GameObject.Find("Player").GetComponent<PlayerScript>().enabled = false;
-            //foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
-            //{
-            //    MeleeEnemyScript mel = enemy.GetComponent<MeleeEnemyScript>();
-            //    if (mel != null)
-            //        mel.enabled = false;
-            //}
             GameObject.Find("Enemyspawner").GetComponent<Spawner>().enabled = false;
 
             //Activate pause canvas
@@ -53,13 +46,6 @@ public class UIScript : MonoBehaviour {
             //Unpauses the game --MAKE SURE ALL SCRIPTS ARE RE-ENABLED HERE--
             Time.timeScale = 1.0f;
             pauseGame = false;
-            //GameObject.Find("Player").GetComponent<PlayerScript>().enabled = true;
-            //foreach (GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
-            //{
-            //    MeleeEnemyScript mel = enemy.GetComponent<MeleeEnemyScript>();
-            //    if (mel != null)
-            //        mel.enabled = true;
-            //}
             GameObject.Find("Enemyspawner").GetComponent<Spawner>().enabled = true;
 
             //Deactivate pause canvas
@@ -69,6 +55,7 @@ public class UIScript : MonoBehaviour {
 
     public void Loadmenu()
     {
+        //Loads menu
         Application.LoadLevel(0);
     }
 
@@ -79,6 +66,7 @@ public class UIScript : MonoBehaviour {
 
     void OnLevelWasLoaded(int level)
     {
+        //Checks what level was loaded
         if (level != 0)
         {
             Time.timeScale = 1.0f;
@@ -88,6 +76,7 @@ public class UIScript : MonoBehaviour {
 
     void ToggleFPS()
     {
+        //Toggle fps display
         FPStext.SetActive(!FPStext.activeSelf);
     }
 }
