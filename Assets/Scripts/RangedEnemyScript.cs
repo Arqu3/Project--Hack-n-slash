@@ -2,28 +2,17 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class RangedEnemyScript : MonoBehaviour {
+public class RangedEnemyScript : Handler {
 
-	public GameObject target;
-	Transform myTransform;
-
-	public NavMeshAgent myAgent;
 	public Slider healthSlider;
-	Vector3 newPosition;
-
-	float health;
 
 	public GameObject bulletPrefab;
 	float timer = 0.0f;
 
-	RaycastHit hit;
-    Vector3 down;
 	Vector3 fwd;
 	float range;
 	public LayerMask layerMask;
-
-	GameObject mainFloor;
-	GameObject spawnFloor;
+    RaycastHit hit1;
 
 	enum State
 	{
@@ -36,21 +25,16 @@ public class RangedEnemyScript : MonoBehaviour {
 	void Awake()
 	{
 		currentState = State.Idle;
-		range = 10.0f;
-		health = 100.0f;
-		myTransform = transform;
 	}
 
 	void Start() 
 	{
-        target = GameObject.FindGameObjectWithTag("Player");
-		mainFloor = GameObject.FindGameObjectWithTag("Floor1");
-		spawnFloor = GameObject.FindGameObjectWithTag("SpawnFloor");
+        range = 10.0f;
+        SetValues();
 	}
 	
 	void Update() 
 	{
-        down = Vector3.down;
 		fwd = transform.forward;
 		Debug.DrawRay(transform.position, fwd * range);
 
@@ -102,39 +86,15 @@ public class RangedEnemyScript : MonoBehaviour {
 		health -= damage;
 	}
 
-	bool IsInRangeOf(GameObject target)
-	{
-		//Checks distance between player and enemy, returns true within given parameters
-		float distance = Vector3.Distance(transform.position, target.transform.position);
-		return distance <= 10;
-	}
-
-	bool IsInShootRangeOf(GameObject target)
-	{
-		//Checks if the enemy is close enough to shoot
-		float distance = Vector3.Distance(transform.position, target.transform.position);
-		return distance <= 6;
-	}
-
 	bool CanSee(GameObject target)
 	{
 		//Checks if enemy can see player via raycasting
-		if (Physics.Raycast(transform.position, fwd, out hit, range, layerMask))
+		if (Physics.Raycast(transform.position, fwd, out hit1, range, layerMask))
 		{
-			if(hit.collider.tag == target.tag)
+			if(hit1.collider.tag == target.tag)
 				return true;
 		}
 		return false;  
-	}
-
-	void MoveTowards(GameObject target)
-	{
-		myAgent.SetDestination(target.transform.position);
-	}
-
-	void Stop()
-	{
-		myAgent.SetDestination(myTransform.position);
 	}
 
 	void RotateTowards(GameObject target)
@@ -158,26 +118,4 @@ public class RangedEnemyScript : MonoBehaviour {
 			clone.GetComponent<Rigidbody>().velocity = transform.forward * 750 * Time.deltaTime;
 		}
 	}
-
-	void Roam(GameObject area)
-	{
-		//Roams given area depending on size
-		float distance = Vector3.Distance(myTransform.position, newPosition);
-		if (distance <= 2.0f)
-		{
-            newPosition = new Vector3(Random.Range(area.GetComponent<Renderer>().bounds.min.x, area.GetComponent<Renderer>().bounds.max.x), 0.7f, Random.Range(area.GetComponent<Renderer>().bounds.min.z, area.GetComponent<Renderer>().bounds.max.z));
-		}
-		myAgent.SetDestination(newPosition);
-	}
-
-    bool IsOn(GameObject floor)
-    {
-        //Checks what floor the object is over
-        if (Physics.Raycast(transform.position, down, out hit, 1))
-        {
-            if (hit.collider.tag == floor.tag)
-                return true;
-        }
-        return false;
-    }
 }

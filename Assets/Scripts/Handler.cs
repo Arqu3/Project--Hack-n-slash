@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Handler : MonoBehaviour {
 
-    static Vector3 down = Vector3.down;
+    protected static Vector3 down = Vector3.down;
     RaycastHit hit;
 
     GameObject[] testList;
@@ -42,17 +42,6 @@ public class Handler : MonoBehaviour {
     {
         ScoreHandlerScript.playerScore += score;
         DestroyObject(obj);
-    }
-
-    public static bool IsOn(GameObject floor, Transform myTransform, RaycastHit hit)
-    {
-        //Checks what floor the object is over
-        if (Physics.Raycast(myTransform.position, down, out hit, 1))
-        {
-            if (hit.collider.tag == floor.tag)
-                return true;
-        }
-        return false;
     }
 
     protected virtual void Roam(GameObject area)
