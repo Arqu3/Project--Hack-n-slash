@@ -6,6 +6,8 @@ public class MeleeEnemyScript : Handler {
 
     public Slider healthSlider;
 
+    float timer;
+
     enum State
     {
         Idle,
@@ -22,6 +24,7 @@ public class MeleeEnemyScript : Handler {
 
 	void Start() 
     {
+        timer = 0.0f;
 	}
 	
 	void Update() 
@@ -51,13 +54,23 @@ public class MeleeEnemyScript : Handler {
 
         if (IsOn(mainFloor) && !IsInRangeOf(target))
             currentState = State.Searching;
+        
         //Health
         healthSlider.value = health;
         if (health <= 0)
+        {
+            SpawnDrop();
             Handler.Remove(gameObject, 10);
+        }
 	}
     void ApplyDamage(float damage)
     {
         health -= damage;
+    }
+    void Attack()
+    {
+        if (Physics.Raycast(transform.position, Vector3.forward, out hit, 3))
+            if (hit.collider.tag == "Player")
+                hit.collider.SendMessage("TakeDamage", 5);
     }
 }

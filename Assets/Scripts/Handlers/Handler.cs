@@ -6,8 +6,6 @@ public class Handler : MonoBehaviour {
     protected Vector3 down;
     protected RaycastHit hit;
 
-    GameObject[] testList;
-
     //Inherited variables
     protected GameObject mainFloor;
     protected GameObject spawnFloor;
@@ -15,31 +13,20 @@ public class Handler : MonoBehaviour {
     protected NavMeshAgent myAgent;
     protected Vector3 newPosition;
     protected GameObject target;
-    protected float health;
+    public float health;
     protected float detectRange;
 
-    public GameObject testPrefab;
+    public GameObject myGoldPrefab;
+    public GameObject myHealthPrefab;
 
     void Start()
     {
     }
-
     void Update()
     {
-        //Test objects for first time handler usage
-        testList = GameObject.FindGameObjectsWithTag("Test");
-
-        if (Input.GetKeyDown(KeyCode.A))
-            Instantiate(testPrefab);
-
-        for (int i = 0; i < testList.Length; i++)
-        {
-            if (testList[i].GetComponent<Testscript>().health <= 0)
-                Remove(testList[i].gameObject, 10);
-        }
     }
 
-    public static void Remove(GameObject obj, int score)
+    protected static void Remove(GameObject obj, int score)
     {
         ScoreHandlerScript.playerScore += score;
         DestroyObject(obj);
@@ -104,4 +91,14 @@ public class Handler : MonoBehaviour {
         health = 100;
         detectRange = 10.0f;
     }
+
+    protected void SpawnDrop()
+    {
+        if (Random.Range(0, 3) == 2)
+            Instantiate(myHealthPrefab, transform.position, Quaternion.identity);
+
+        if (Random.Range(0, 4) == 3)
+            Instantiate(myGoldPrefab, transform.position, Quaternion.identity);
+    }
+
 }

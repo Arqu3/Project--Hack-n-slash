@@ -6,7 +6,6 @@ public class PlayerScript : MonoBehaviour
 {
     Vector3 newPosition;
     bool hasReached = true;
-    public float duration = 50f;
     float yAxis = 0.7f;
 
     public LayerMask rayMask;
@@ -18,19 +17,20 @@ public class PlayerScript : MonoBehaviour
     float hitCD2 = 0.0f;
     Vector3 fwd;
 
-    float charge = 0f;
-    float damage = 20f;
+    float charge = 0.0f;
+    float damage = 30.0f;
+    public float speed = 5.0f;
     float offset = 1.7f;
     float radius = 1.35f;
 
     public Text healthText;
     public Slider chargeBar;
-    public Slider cooldown1;
-    public Slider cooldown2;
+    public Slider[] cooldowns;
     public Slider healthBar;
 
-    static float currentHealth;
-    static float maxHealth;
+    public static float currentHealth;
+    public static float maxHealth;
+    public static int gold;
 
 	void Start () 
 	{
@@ -117,6 +117,7 @@ public class PlayerScript : MonoBehaviour
 
     void RightClickHold()
     {
+        //Charges right cick attack
         hasReached = true;
 
         if (charge < 2.0f)
@@ -151,7 +152,7 @@ public class PlayerScript : MonoBehaviour
         //Player movement
         if (hasReached == false && Vector3.Distance(newPosition, transform.position) > 1.0f)
         {
-            GetComponent<Rigidbody>().velocity = fwd * 5;
+            GetComponent<Rigidbody>().velocity = fwd * speed;
             GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
         }
         else if (hasReached == false && Vector3.Distance(newPosition, transform.position) < 1.0f)
@@ -179,20 +180,20 @@ public class PlayerScript : MonoBehaviour
         chargeBar.value = charge;
 
         //First button
-        cooldown1.maxValue = 30;
-        cooldown1.value = hitCD;
+        cooldowns[0].maxValue = 30;
+        cooldowns[0].value = hitCD;
         if (hitCD <= 0)
-            cooldown1.fillRect.localScale = Vector3.zero;
+            cooldowns[0].fillRect.localScale = Vector3.zero;
         else
-            cooldown1.fillRect.localScale = new Vector3(1, 1, 1);
+            cooldowns[0].fillRect.localScale = new Vector3(1, 1, 1);
 
         //Second button
-        cooldown2.maxValue = 100;
-        cooldown2.value = hitCD2;
+        cooldowns[1].maxValue = 100;
+        cooldowns[1].value = hitCD2;
         if (hitCD2 <= 0)
-            cooldown2.fillRect.localScale = Vector3.zero;
+            cooldowns[1].fillRect.localScale = Vector3.zero;
         else
-            cooldown2.fillRect.localScale = new Vector3(1, 1, 1);
+            cooldowns[1].fillRect.localScale = new Vector3(1, 1, 1);
     }
 
     void TakeDamage(float damage)

@@ -7,7 +7,7 @@ public class RangedEnemyScript : Handler {
 	public Slider healthSlider;
 
 	public GameObject bulletPrefab;
-	float timer = 0.0f;
+    float timer;
 
 	Vector3 fwd;
 	float range;
@@ -25,16 +25,18 @@ public class RangedEnemyScript : Handler {
 	void Awake()
 	{
 		currentState = State.Idle;
+        SetValues();
 	}
 
 	void Start() 
 	{
         range = 10.0f;
-        SetValues();
+        timer = 0.0f;
 	}
 	
 	void Update() 
 	{
+
 		fwd = transform.forward;
 		Debug.DrawRay(transform.position, fwd * range);
 
@@ -79,7 +81,10 @@ public class RangedEnemyScript : Handler {
         //Health
         healthSlider.value = health;
         if (health <= 0)
+        {
+            SpawnDrop();
             Handler.Remove(gameObject, 15);
+        }
 	}
 	void ApplyDamage(float damage)
 	{
