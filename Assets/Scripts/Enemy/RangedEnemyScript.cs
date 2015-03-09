@@ -9,10 +9,10 @@ public class RangedEnemyScript : Handler {
 	public GameObject bulletPrefab;
     float timer;
 
-	Vector3 fwd;
 	float range;
 	public LayerMask layerMask;
     RaycastHit hit1;
+    Vector3 fwd;
 
 	enum State
 	{
@@ -72,10 +72,10 @@ public class RangedEnemyScript : Handler {
         if (IsOn(spawnFloor))
             MoveTowards(mainFloor);
 
-        if (IsOn(mainFloor) && !IsInRangeOf(target))
+        if (IsOn(mainFloor) && !IsInRangeOf(target, 10f))
             currentState = State.Searching;
 
-        if (IsInRangeOf(target))
+        if (IsInRangeOf(target, 10f))
             currentState = State.Attacking;
 
         //Health

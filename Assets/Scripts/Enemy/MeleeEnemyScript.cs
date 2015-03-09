@@ -7,6 +7,8 @@ public class MeleeEnemyScript : Handler {
     public Slider healthSlider;
 
     float timer;
+    RaycastHit hit1;
+    Vector3 fwd;
 
     enum State
     {
@@ -29,7 +31,7 @@ public class MeleeEnemyScript : Handler {
 	
 	void Update() 
     {
-
+        fwd = transform.forward;
         //Behavior code
         switch (currentState)
         {
@@ -39,6 +41,7 @@ public class MeleeEnemyScript : Handler {
 
             case State.Attacking:
                 MoveTowards(target);
+                Attack();
                 break;
 
             case State.Searching:
@@ -46,13 +49,13 @@ public class MeleeEnemyScript : Handler {
                 break;
         }
         //Behavior switching
-        if (IsInRangeOf(target))
+        if (IsInRangeOf(target, 10f))
             currentState = State.Attacking;
 
         if (IsOn(spawnFloor))
             MoveTowards(mainFloor);
 
-        if (IsOn(mainFloor) && !IsInRangeOf(target))
+        if (IsOn(mainFloor) && !IsInRangeOf(target, 10f))
             currentState = State.Searching;
         
         //Health
@@ -62,6 +65,8 @@ public class MeleeEnemyScript : Handler {
             SpawnDrop();
             Handler.Remove(gameObject, 10);
         }
+
+        Debug.DrawRay(myTransform.position, fwd * 3);
 	}
     void ApplyDamage(float damage)
     {
@@ -69,8 +74,11 @@ public class MeleeEnemyScript : Handler {
     }
     void Attack()
     {
-        if (Physics.Raycast(transform.position, Vector3.forward, out hit, 3))
-            if (hit.collider.tag == "Player")
-                hit.collider.SendMessage("TakeDamage", 5);
+        if (Physics.Raycast(myTransform.position, fwd, out hit1, 3))
+            if (hit1.collider.tag == "Player")
+            { 
+                hit1.collider.SendMessage("TakeDamage", 5);
+                Debug.Log("attacked");
+            }
     }
 }

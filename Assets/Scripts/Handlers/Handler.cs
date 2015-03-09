@@ -4,7 +4,7 @@ using System.Collections;
 public class Handler : MonoBehaviour {
 
     protected Vector3 down;
-    protected RaycastHit hit;
+    RaycastHit hit;
 
     //Inherited variables
     protected GameObject mainFloor;
@@ -14,7 +14,6 @@ public class Handler : MonoBehaviour {
     protected Vector3 newPosition;
     protected GameObject target;
     public float health;
-    protected float detectRange;
 
     public GameObject myGoldPrefab;
     public GameObject myHealthPrefab;
@@ -43,7 +42,7 @@ public class Handler : MonoBehaviour {
         myAgent.SetDestination(newPosition);
     }
 
-    protected bool IsInRangeOf(GameObject target)
+    protected bool IsInRangeOf(GameObject target, float detectRange)
     {
         //Returns true if close enough to player
         float distance = Vector3.Distance(transform.position, target.transform.position);
@@ -89,7 +88,6 @@ public class Handler : MonoBehaviour {
         newPosition = new Vector3(Random.Range(-20, 20), 0.7f, Random.Range(-20, 20));
         target = GameObject.FindGameObjectWithTag("Player");
         health = 100;
-        detectRange = 10.0f;
     }
 
     protected void SpawnDrop()
