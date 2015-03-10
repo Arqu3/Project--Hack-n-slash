@@ -27,6 +27,7 @@ public class UIScript : MonoBehaviour {
 	
 	void Update () 
     {
+        //Toggle menu
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (currentState == State.InGame)
@@ -34,10 +35,13 @@ public class UIScript : MonoBehaviour {
             else if (currentState == State.Paused)
                 currentState = State.InGame;
         }
-
+        //Game over
+        if (PlayerScript.currentHealth <= 0)
+            currentState = State.GameOver;
+        //Fps toggle
         if (Input.GetKeyDown(KeyCode.R))
             ToggleFPS();
-
+        
         StateHandling();
 	}
 

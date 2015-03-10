@@ -48,6 +48,7 @@ public class PlayerScript : MonoBehaviour
             hitCD2 -= 60 * Time.deltaTime;
 
         fwd = transform.TransformDirection(Vector3.forward);
+        Debug.DrawRay(transform.position, fwd * range, Color.red);
 
         //Uses raycasthit to detect where the player is clicking and moves to that position
         if (Input.GetMouseButton(0) && !Input.GetMouseButton(1))
@@ -80,10 +81,10 @@ public class PlayerScript : MonoBehaviour
                 RightClickRelease();
             }
         }
-
+        //Health
         healthText.text = currentHealth + "/" + maxHealth;
-
-        Debug.DrawRay(transform.position, fwd * range, Color.red);
+        if (currentHealth > maxHealth)
+            currentHealth = maxHealth;
 	}
     void Rotate()
     {

@@ -32,6 +32,7 @@ public class MeleeEnemyScript : Handler {
 	void Update() 
     {
         fwd = transform.forward;
+        Debug.DrawRay(myTransform.position, fwd * 3);
         //Behavior code
         switch (currentState)
         {
@@ -48,6 +49,10 @@ public class MeleeEnemyScript : Handler {
                 Roam(mainFloor);
                 break;
         }
+
+        if (timer > 0)
+            timer -= 60 * Time.deltaTime;
+
         //Behavior switching
         if (IsInRangeOf(target, 10f))
             currentState = State.Attacking;
@@ -66,7 +71,6 @@ public class MeleeEnemyScript : Handler {
             Handler.Remove(gameObject, 10);
         }
 
-        Debug.DrawRay(myTransform.position, fwd * 3);
 	}
     void ApplyDamage(float damage)
     {
@@ -75,10 +79,14 @@ public class MeleeEnemyScript : Handler {
     void Attack()
     {
         if (Physics.Raycast(myTransform.position, fwd, out hit1, 3))
-            if (hit1.collider.tag == "Player")
-            { 
-                hit1.collider.SendMessage("TakeDamage", 5);
-                Debug.Log("attacked");
+            if (timer <= 0)
+            {
+                if (hit1.collider.tag == "Player")
+                {
+                    timer = 60;
+                    hit1.collider.SendMessage("TakeDamage", 5);
+                    Debug.Log("attacked");
+                }
             }
     }
 }
