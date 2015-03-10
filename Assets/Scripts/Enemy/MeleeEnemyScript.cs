@@ -85,7 +85,6 @@ public class MeleeEnemyScript : Handler {
                 {
                     timer = 60;
                     hit1.collider.SendMessage("TakeDamage", 5);
-                    Debug.Log("attacked");
                 }
             }
     }

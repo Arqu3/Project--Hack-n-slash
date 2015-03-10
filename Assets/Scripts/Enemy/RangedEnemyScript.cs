@@ -118,7 +118,7 @@ public class RangedEnemyScript : Handler {
 		GameObject clone;
 		if (timer <= 0)
 		{
-			timer = 45;
+			timer = 75;
 			clone = (GameObject)Instantiate(bulletPrefab, transform.position + transform.forward, transform.rotation);
 			clone.GetComponent<Rigidbody>().velocity = transform.forward * 750 * Time.deltaTime;
 		}

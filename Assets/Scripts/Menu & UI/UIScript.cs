@@ -6,6 +6,8 @@ public class UIScript : MonoBehaviour {
 
     GameObject pauseCanvas;
     GameObject gameCanvas;
+    GameObject GOCanvas;
+    public Text GOText;
     GameObject FPStext;
 
     public enum State
@@ -22,18 +24,23 @@ public class UIScript : MonoBehaviour {
         FPStext = GameObject.FindGameObjectWithTag("FPStext");
         pauseCanvas = GameObject.FindGameObjectWithTag("PauseCanvas");
         gameCanvas = GameObject.FindGameObjectWithTag("GameCanvas");
+        GOCanvas = GameObject.FindGameObjectWithTag("GOCanvas");
         pauseCanvas.SetActive(false);
+        GOCanvas.SetActive(false);
 	}
 	
 	void Update () 
     {
         //Toggle menu
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (currentState != State.GameOver)
         {
-            if (currentState == State.InGame)
-                currentState = State.Paused;
-            else if (currentState == State.Paused)
-                currentState = State.InGame;
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                if (currentState == State.InGame)
+                    currentState = State.Paused;
+                else if (currentState == State.Paused)
+                    currentState = State.InGame;
+            }
         }
         //Game over
         if (PlayerScript.currentHealth <= 0)
@@ -69,6 +76,9 @@ public class UIScript : MonoBehaviour {
             case State.GameOver:
             Time.timeScale = 0.00001f;
             GameObject.Find("Enemyspawner").GetComponent<Spawner>().enabled = false;
+            GOCanvas.SetActive(true);
+            gameCanvas.SetActive(false);
+            GOText.text = ("Game over! \nYour score was: " + ScoreHandlerScript.playerScore);
             break;
         }
     }
@@ -96,6 +106,7 @@ public class UIScript : MonoBehaviour {
         if (level != 0)
         {
             Time.timeScale = 1.0f;
+            ScoreHandlerScript.playerScore = 0;
             Debug.Log("Loaded level: " + level);
         }
     }

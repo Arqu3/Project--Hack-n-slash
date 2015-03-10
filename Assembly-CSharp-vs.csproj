@@ -49,7 +49,6 @@
      <Compile Include="Assets\Scripts\Enemy\BulletScript.cs" />
      <Compile Include="Assets\Scripts\Enemy\MeleeEnemyScript.cs" />
      <Compile Include="Assets\Scripts\Enemy\RangedEnemyScript.cs" />
-     <Compile Include="Assets\Scripts\Enemy\Testscript.cs" />
      <Compile Include="Assets\Scripts\Handlers\Handler.cs" />
      <Compile Include="Assets\Scripts\Handlers\ScoreHandlerScript.cs" />
      <Compile Include="Assets\Scripts\Handlers\Spawner.cs" />
