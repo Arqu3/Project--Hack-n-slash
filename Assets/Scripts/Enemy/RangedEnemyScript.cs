@@ -7,7 +7,7 @@ public class RangedEnemyScript : Handler {
 	public Slider healthSlider;
 
 	public GameObject bulletPrefab;
-    float timer;
+    float shootTimer;
 
 	float range;
 	public LayerMask layerMask;
@@ -31,12 +31,12 @@ public class RangedEnemyScript : Handler {
 	void Start() 
 	{
         range = 10.0f;
-        timer = 0.0f;
+        shootTimer = 0.0f;
 	}
 	
 	void Update() 
 	{
-
+        FlickerColor(Color.green);
 		fwd = transform.forward;
 		Debug.DrawRay(transform.position, fwd * range);
 
@@ -65,8 +65,8 @@ public class RangedEnemyScript : Handler {
 		}
 
 		//Shoot timer
-		if (timer > 0)
-			timer -= 60 * Time.deltaTime;
+		if (shootTimer > 0)
+			shootTimer -= 60 * Time.deltaTime;
 
         //Behavior switching
         if (IsOn(spawnFloor))
@@ -88,6 +88,7 @@ public class RangedEnemyScript : Handler {
 	}
 	void ApplyDamage(float damage)
 	{
+        colorTimer = 1.5f;
 		health -= damage;
 	}
 
@@ -116,9 +117,9 @@ public class RangedEnemyScript : Handler {
 	{
 		//Shoots clone, timer sets cooldown
 		GameObject clone;
-		if (timer <= 0)
+		if (shootTimer <= 0)
 		{
-			timer = 75;
+			shootTimer = 75;
 			clone = (GameObject)Instantiate(bulletPrefab, transform.position + transform.forward, transform.rotation);
 			clone.GetComponent<Rigidbody>().velocity = transform.forward * 750 * Time.deltaTime;
 		}

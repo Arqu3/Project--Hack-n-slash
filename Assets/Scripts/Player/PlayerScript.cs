@@ -18,8 +18,8 @@ public class PlayerScript : MonoBehaviour
     Vector3 fwd;
 
     float charge = 0.0f;
-    float damage = 30.0f;
-    public float speed = 5.0f;
+    public static float damage = 30.0f;
+    static float speed = 6.0f;
     float offset = 1.7f;
     float radius = 1.35f;
 
@@ -82,7 +82,7 @@ public class PlayerScript : MonoBehaviour
             }
         }
         //Health
-        healthText.text = currentHealth + "/" + maxHealth;
+        healthText.text = (int)currentHealth + "/" + maxHealth;
         if (currentHealth > maxHealth)
             currentHealth = maxHealth;
 	}

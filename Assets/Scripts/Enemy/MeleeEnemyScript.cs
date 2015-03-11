@@ -6,7 +6,7 @@ public class MeleeEnemyScript : Handler {
 
     public Slider healthSlider;
 
-    float timer;
+    float attackTimer;
     RaycastHit hit1;
     Vector3 fwd;
 
@@ -26,11 +26,12 @@ public class MeleeEnemyScript : Handler {
 
 	void Start() 
     {
-        timer = 0.0f;
+        attackTimer = 0.0f;
 	}
 	
 	void Update() 
     {
+        FlickerColor(Color.grey);
         fwd = transform.forward;
         Debug.DrawRay(myTransform.position, fwd * 3);
         //Behavior code
@@ -50,8 +51,8 @@ public class MeleeEnemyScript : Handler {
                 break;
         }
 
-        if (timer > 0)
-            timer -= 60 * Time.deltaTime;
+        if (attackTimer > 0)
+            attackTimer -= 60 * Time.deltaTime;
 
         //Behavior switching
         if (IsInRangeOf(target, 10f))
@@ -74,16 +75,17 @@ public class MeleeEnemyScript : Handler {
 	}
     void ApplyDamage(float damage)
     {
+        colorTimer = 1.5f;
         health -= damage;
     }
     void Attack()
     {
         if (Physics.Raycast(myTransform.position, fwd, out hit1, 3))
-            if (timer <= 0)
+            if (attackTimer <= 0)
             {
                 if (hit1.collider.tag == "Player")
                 {
-                    timer = 60;
+                    attackTimer = 60;
                     hit1.collider.SendMessage("TakeDamage", 5);
                 }
             }

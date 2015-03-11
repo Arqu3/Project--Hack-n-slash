@@ -14,6 +14,7 @@ public class Handler : MonoBehaviour {
     protected Vector3 newPosition;
     protected GameObject target;
     public float health;
+    protected float colorTimer;
 
     public GameObject myGoldPrefab;
     public GameObject myHealthPrefab;
@@ -77,6 +78,17 @@ public class Handler : MonoBehaviour {
         return false;
     }
 
+    protected void FlickerColor(Color baseColor)
+    {
+        if (colorTimer >= 0)
+        {
+            colorTimer -= 10.0f * Time.deltaTime;
+            GetComponent<Renderer>().material.color = Color.red;
+        }
+        else if (colorTimer <= 0)
+            GetComponent<Renderer>().material.color = baseColor;
+    }
+
     protected virtual void SetValues()
     {
         //Sets standard values for all inheriting classes
@@ -88,6 +100,7 @@ public class Handler : MonoBehaviour {
         newPosition = new Vector3(Random.Range(-20, 20), 0.7f, Random.Range(-20, 20));
         target = GameObject.FindGameObjectWithTag("Player");
         health = 100;
+        colorTimer = 0.0f;
     }
 
     protected void SpawnDrop()

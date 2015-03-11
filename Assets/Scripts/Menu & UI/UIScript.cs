@@ -87,6 +87,7 @@ public class UIScript : MonoBehaviour {
     {
         //Sets state to ingame via button click in menu
         currentState = State.InGame;
+        Debug.Log("Resumed game");
     }
 
     public void Loadmenu()
@@ -107,6 +108,10 @@ public class UIScript : MonoBehaviour {
         {
             Time.timeScale = 1.0f;
             ScoreHandlerScript.playerScore = 0;
+            PlayerScript.damage = 30;
+            PlayerScript.currentHealth = 100;
+            PlayerScript.maxHealth = 100;
+            PlayerScript.gold = 0;
             Debug.Log("Loaded level: " + level);
         }
     }
