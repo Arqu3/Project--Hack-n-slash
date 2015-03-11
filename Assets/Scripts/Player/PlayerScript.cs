@@ -24,6 +24,7 @@ public class PlayerScript : MonoBehaviour
     float radius = 1.35f;
 
     public Text healthText;
+    public Text goldText;
     public Slider chargeBar;
     public Slider[] cooldowns;
     public Slider healthBar;
@@ -81,8 +82,7 @@ public class PlayerScript : MonoBehaviour
                 RightClickRelease();
             }
         }
-        //Health
-        healthText.text = (int)currentHealth + "/" + maxHealth;
+        //Sets health to max if above max
         if (currentHealth > maxHealth)
             currentHealth = maxHealth;
 	}
@@ -171,6 +171,10 @@ public class PlayerScript : MonoBehaviour
         //Healthbar
         healthBar.maxValue = 100;
         healthBar.value = currentHealth;
+        healthText.text = (int)currentHealth + "/" + maxHealth;
+
+        //Gold text
+        goldText.text = "Gold: " + gold;
 
         //Chargebar visibility
         if (charge <= 0)

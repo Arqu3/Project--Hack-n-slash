@@ -44,14 +44,13 @@ public class RangedEnemyScript : Handler {
 		switch (currentState)
 		{
 			case State.Idle:
-				Stop();
 				break;
 
 			case State.Attacking:
                 MoveTowards(target);
                 if (IsInShootRangeOf(target))
                 {
-                    RotateTowards(target);
+                    RotateTowards(target, 10.0f);
                     Stop();
                 }
 
@@ -72,10 +71,10 @@ public class RangedEnemyScript : Handler {
         if (IsOn(spawnFloor))
             MoveTowards(mainFloor);
 
-        if (IsOn(mainFloor) && !IsInRangeOf(target, 10f))
+        if (IsOn(mainFloor) && !IsInRangeOf(target, 10.0f))
             currentState = State.Searching;
 
-        if (IsInRangeOf(target, 10f))
+        if (IsInRangeOf(target, 10.0f))
             currentState = State.Attacking;
 
         //Health
@@ -103,23 +102,13 @@ public class RangedEnemyScript : Handler {
 		return false;  
 	}
 
-	void RotateTowards(GameObject target)
-	{
-		//Rotates to given target
-		float distance = Vector3.Distance(transform.position, target.transform.position);
-		Vector3 direction = (target.transform.position - transform.position).normalized;
-		Quaternion lookRotation = Quaternion.LookRotation(direction);
-		if (distance <= 10)
-		transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 10);
-	}
-
 	void Shoot(GameObject bulletPrefab)
 	{
 		//Shoots clone, timer sets cooldown
 		GameObject clone;
 		if (shootTimer <= 0)
 		{
-			shootTimer = 75;
+			shootTimer = 90;
 			clone = (GameObject)Instantiate(bulletPrefab, transform.position + transform.forward, transform.rotation);
 			clone.GetComponent<Rigidbody>().velocity = transform.forward * 750 * Time.deltaTime;
 		}

@@ -33,16 +33,16 @@ public class MeleeEnemyScript : Handler {
     {
         FlickerColor(Color.grey);
         fwd = transform.forward;
-        Debug.DrawRay(myTransform.position, fwd * 3);
+        Debug.DrawRay(myTransform.position, fwd * 2);
         //Behavior code
         switch (currentState)
         {
             case State.Idle:
-                Stop();
                 break;
 
             case State.Attacking:
                 MoveTowards(target);
+                RotateTowards(target, 10.0f);
                 Attack();
                 break;
 
@@ -55,13 +55,13 @@ public class MeleeEnemyScript : Handler {
             attackTimer -= 60 * Time.deltaTime;
 
         //Behavior switching
-        if (IsInRangeOf(target, 10f))
+        if (IsInRangeOf(target, 10.0f))
             currentState = State.Attacking;
 
         if (IsOn(spawnFloor))
             MoveTowards(mainFloor);
 
-        if (IsOn(mainFloor) && !IsInRangeOf(target, 10f))
+        if (IsOn(mainFloor) && !IsInRangeOf(target, 10.0f))
             currentState = State.Searching;
         
         //Health
@@ -80,7 +80,7 @@ public class MeleeEnemyScript : Handler {
     }
     void Attack()
     {
-        if (Physics.Raycast(myTransform.position, fwd, out hit1, 3))
+        if (Physics.Raycast(myTransform.position, fwd, out hit1, 2))
             if (attackTimer <= 0)
             {
                 if (hit1.collider.tag == "Player")

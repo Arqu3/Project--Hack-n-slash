@@ -8,7 +8,7 @@ public class UIScript : MonoBehaviour {
     GameObject gameCanvas;
     GameObject GOCanvas;
     public Text GOText;
-    GameObject FPStext;
+    public GameObject FPStext;
 
     public enum State
     {
@@ -21,7 +21,6 @@ public class UIScript : MonoBehaviour {
 	void Start() 
     {
         currentState = State.InGame;
-        FPStext = GameObject.FindGameObjectWithTag("FPStext");
         pauseCanvas = GameObject.FindGameObjectWithTag("PauseCanvas");
         gameCanvas = GameObject.FindGameObjectWithTag("GameCanvas");
         GOCanvas = GameObject.FindGameObjectWithTag("GOCanvas");
@@ -87,7 +86,6 @@ public class UIScript : MonoBehaviour {
     {
         //Sets state to ingame via button click in menu
         currentState = State.InGame;
-        Debug.Log("Resumed game");
     }
 
     public void Loadmenu()
@@ -104,7 +102,7 @@ public class UIScript : MonoBehaviour {
     void OnLevelWasLoaded(int level)
     {
         //Checks what level was loaded
-        if (level != 0)
+        if (level == 1)
         {
             Time.timeScale = 1.0f;
             ScoreHandlerScript.playerScore = 0;
@@ -112,7 +110,6 @@ public class UIScript : MonoBehaviour {
             PlayerScript.currentHealth = 100;
             PlayerScript.maxHealth = 100;
             PlayerScript.gold = 0;
-            Debug.Log("Loaded level: " + level);
         }
     }
 

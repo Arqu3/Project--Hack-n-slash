@@ -19,6 +19,6 @@ public class BulletScript : MonoBehaviour {
 			Destroy(gameObject);
         //If the bullet hit the player, deal damage
 		if (col.gameObject.tag == "Player")
-			col.gameObject.SendMessage("TakeDamage", 10, SendMessageOptions.DontRequireReceiver);
+			col.gameObject.SendMessage("TakeDamage", 8, SendMessageOptions.DontRequireReceiver);
 	}
 }

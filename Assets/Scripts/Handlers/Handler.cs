@@ -62,6 +62,16 @@ public class Handler : MonoBehaviour {
         myAgent.SetDestination(target.transform.position);
     }
 
+    protected void RotateTowards(GameObject target, float range)
+    {
+        //Rotates to given target
+        float distance = Vector3.Distance(transform.position, target.transform.position);
+        Vector3 direction = (target.transform.position - transform.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(direction);
+        if (distance <= range)
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 10);
+    }
+
     protected void Stop()
     {
         myAgent.SetDestination(myTransform.position);
@@ -80,6 +90,7 @@ public class Handler : MonoBehaviour {
 
     protected void FlickerColor(Color baseColor)
     {
+        //Flickers color when taking damage
         if (colorTimer >= 0)
         {
             colorTimer -= 10.0f * Time.deltaTime;
