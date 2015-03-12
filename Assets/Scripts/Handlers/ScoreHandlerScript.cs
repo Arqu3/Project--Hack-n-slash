@@ -9,6 +9,7 @@ public class ScoreHandlerScript : MonoBehaviour {
 
 	void Start() 
     {
+        playerScore = 0;
 	}
 	
 	void Update() 

@@ -99,7 +99,7 @@ public class PlayerScript : MonoBehaviour
         //Player damage
         if (Physics.Raycast(transform.position, fwd, out hit2, 3))
         {
-            if (hit.collider.tag == "Enemy1" || hit.collider.tag == "Enemy2")
+            if (hit.collider.tag == "Enemy")
             {
                 hasReached = true;
                 if (hitCD <= 0 && charge <= 0)
@@ -109,7 +109,7 @@ public class PlayerScript : MonoBehaviour
                     Debug.Log("Dealt: " + damage + " damage");
                 }
             }
-            else if (hit.collider.tag != "Enemy1" || hit.collider.tag != "Enemy2")
+            else if (hit.collider.tag != "Enemy")
                 hasReached = false;
         }
         else
@@ -139,7 +139,7 @@ public class PlayerScript : MonoBehaviour
         hitCD2 = 100;
         for (int i = 0; i < colliders.Length; i++)
         {
-            if (colliders[i].tag == "Enemy1" || colliders[i].tag == "Enemy2")
+            if (colliders[i].tag == "Enemy")
             {
                 colliders[i].SendMessage("ApplyDamage", (int)totalDamage, SendMessageOptions.DontRequireReceiver);
                 Debug.Log("Dealt: " + (int)totalDamage + " damage");

@@ -16,7 +16,7 @@ public class UIScript : MonoBehaviour {
         InGame,
         GameOver
     }
-    public State currentState;
+    public static State currentState;
 
 	void Start() 
     {

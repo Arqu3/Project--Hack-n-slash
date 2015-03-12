@@ -36,8 +36,8 @@ public class ShopScript : MonoBehaviour {
         //Pauses when in shop
         if (shopCanvas.activeSelf)
             Time.timeScale = 0.00001f;
-        else
-            Time.timeScale = 1f;
+        else if (PlayerScript.currentHealth > 0 && UIScript.currentState != UIScript.State.Paused)
+            Time.timeScale = 1.0f;
 
         if (shopCanvas.activeSelf)
         {
@@ -76,6 +76,7 @@ public class ShopScript : MonoBehaviour {
 
     bool IsInShop(GameObject player)
     {
+        //Checks if the player is near the shop
         float distance = Vector3.Distance(transform.position, player.transform.position);
         if (distance <= 3)
             return true;
