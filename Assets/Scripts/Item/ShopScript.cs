@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class ShopScript : MonoBehaviour {
 
@@ -9,6 +10,8 @@ public class ShopScript : MonoBehaviour {
 
     GameObject player;
     GameObject shopCanvas;
+
+    public Button[] buttons;
 
 	void Start () 
     {
@@ -20,13 +23,28 @@ public class ShopScript : MonoBehaviour {
 	
 	void Update () 
     {
+        //Sets totalcost
         totalCost[0] = baseCost + scalingCost[0];
         totalCost[1] = baseCost + scalingCost[1];
 
+        //Toggle shop active
         if (IsInShop(player) && Input.GetKeyDown(KeyCode.Tab))
-            shopCanvas.SetActive(true);
+            shopCanvas.SetActive(!shopCanvas.activeSelf);
         else if (!IsInShop(player))
             shopCanvas.SetActive(false);
+
+        //Pauses when in shop
+        if (shopCanvas.activeSelf)
+            Time.timeScale = 0.00001f;
+        else
+            Time.timeScale = 1f;
+
+        if (shopCanvas.activeSelf)
+        {
+            //Sets button text when canvas is active
+            buttons[0].GetComponentInChildren<Text>().text = "Health \nCost: " + totalCost[0];
+            buttons[1].GetComponentInChildren<Text>().text = "Damage \nCost: " + totalCost[1];
+        }
 	}
 
     public void AddHealth()
