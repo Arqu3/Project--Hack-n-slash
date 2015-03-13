@@ -10,9 +10,11 @@ public class MenuScript : MonoBehaviour
     bool direction;
 
     Animator animator;
+    bool animation;
 
     void Start()
     {
+        animation = false;
         direction = false;
         colorTimer = 0f;
         animator = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Animator>();
@@ -55,6 +57,10 @@ public class MenuScript : MonoBehaviour
 
     public void PlayAnimation()
     {
-        animator.Play("MoveCamera");
+        animation = !animation;
+        if (animation)
+            animator.Play("MoveCamera");
+        else if (!animation)
+            animator.Play("MoveCameraBack");
     }
 }
