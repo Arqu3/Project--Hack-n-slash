@@ -26,6 +26,7 @@ public class UIScript : MonoBehaviour {
         GOCanvas = GameObject.FindGameObjectWithTag("GOCanvas");
         pauseCanvas.SetActive(false);
         GOCanvas.SetActive(false);
+        FPStext.SetActive(false);
 	}
 	
 	void Update () 
