@@ -1,11 +1,12 @@
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2008
-
-Project("{944AA99D-8EC2-D8A2-284A-B46100EE0ED9}") = "Project--Hack-n-slash", "Assembly-CSharp-firstpass-vs.csproj", "{FC5F0823-B068-A8EE-A728-19342D78FB35}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-firstpass-vs", "Assembly-CSharp-firstpass-vs.csproj", "{5393804C-7CC6-AEE1-6F12-94F3E55BA8B6}"
 EndProject
-Project("{944AA99D-8EC2-D8A2-284A-B46100EE0ED9}") = "Project--Hack-n-slash", "Assembly-CSharp-vs.csproj", "{79CF5A08-91A0-20FA-F296-E678CC4F3141}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-vs", "Assembly-CSharp-vs.csproj", "{FFC5AFEF-2333-FEB1-8C2B-BFB0C622F8A4}"
 EndProject
-Project("{944AA99D-8EC2-D8A2-284A-B46100EE0ED9}") = "Project--Hack-n-slash", "Assembly-CSharp-Editor-vs.csproj", "{79FC1611-8E01-BF4C-635E-3A7F25936059}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-Editor-vs", "Assembly-CSharp-Editor-vs.csproj", "{25E63639-187D-366E-E47E-A0F1428D8F0F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,33 +14,32 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FC5F0823-B068-A8EE-A728-19342D78FB35}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FC5F0823-B068-A8EE-A728-19342D78FB35}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FC5F0823-B068-A8EE-A728-19342D78FB35}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FC5F0823-B068-A8EE-A728-19342D78FB35}.Release|Any CPU.Build.0 = Release|Any CPU
-		{79CF5A08-91A0-20FA-F296-E678CC4F3141}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{79CF5A08-91A0-20FA-F296-E678CC4F3141}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{79CF5A08-91A0-20FA-F296-E678CC4F3141}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{79CF5A08-91A0-20FA-F296-E678CC4F3141}.Release|Any CPU.Build.0 = Release|Any CPU
-		{79FC1611-8E01-BF4C-635E-3A7F25936059}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{79FC1611-8E01-BF4C-635E-3A7F25936059}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{79FC1611-8E01-BF4C-635E-3A7F25936059}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{79FC1611-8E01-BF4C-635E-3A7F25936059}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5393804C-7CC6-AEE1-6F12-94F3E55BA8B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5393804C-7CC6-AEE1-6F12-94F3E55BA8B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5393804C-7CC6-AEE1-6F12-94F3E55BA8B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5393804C-7CC6-AEE1-6F12-94F3E55BA8B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFC5AFEF-2333-FEB1-8C2B-BFB0C622F8A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFC5AFEF-2333-FEB1-8C2B-BFB0C622F8A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFC5AFEF-2333-FEB1-8C2B-BFB0C622F8A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFC5AFEF-2333-FEB1-8C2B-BFB0C622F8A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25E63639-187D-366E-E47E-A0F1428D8F0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25E63639-187D-366E-E47E-A0F1428D8F0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25E63639-187D-366E-E47E-A0F1428D8F0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25E63639-187D-366E-E47E-A0F1428D8F0F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-																																																																																																																											GlobalSection(MonoDevelopProperties) = preSolution
+	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Assembly-CSharp.csproj
 		Policies = $0
-		$0.TextStylePolicy = $1
+		$0.TextStylePolicy = $3
 		$1.inheritsSet = null
 		$1.scope = text/x-csharp
 		$0.CSharpFormattingPolicy = $2
 		$2.inheritsSet = Mono
 		$2.inheritsScope = text/x-csharp
 		$2.scope = text/x-csharp
-		$0.TextStylePolicy = $3
 		$3.FileWidth = 120
 		$3.TabWidth = 4
 		$3.EolMarker = Unix
@@ -47,5 +47,4 @@ Global
 		$3.inheritsScope = text/plain
 		$3.scope = text/plain
 	EndGlobalSection
-
 EndGlobal
