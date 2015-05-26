@@ -110,7 +110,7 @@ public class RangedEnemyScript : Handler {
 		{
 			shootTimer = 90;
 			clone = (GameObject)Instantiate(bulletPrefab, transform.position + transform.forward, transform.rotation);
-			clone.GetComponent<Rigidbody2D>().velocity = transform.forward * 750 * Time.deltaTime;
+			clone.GetComponent<Rigidbody>().velocity = transform.forward * 750 * Time.deltaTime;
 		}
 	}
 }

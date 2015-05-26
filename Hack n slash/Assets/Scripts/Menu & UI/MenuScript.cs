@@ -63,4 +63,9 @@ public class MenuScript : MonoBehaviour
         else if (!animation)
             animator.Play("MoveCameraBack");
     }
+
+    public void Exit()
+    {
+        Application.Quit();
+    }
 }
