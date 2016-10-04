@@ -1,35 +1,29 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class MenuScript : MonoBehaviour
 {
-    public Light light;
+    public Light menuLight;
     Color lerpedColor;
     float colorTimer;
     bool direction;
 
     Animator animator;
-    bool animation;
+    bool isAnimation = false;
 
     void Start()
     {
-        animation = false;
         direction = false;
         colorTimer = 0f;
         animator = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Animator>();
+        Time.timeScale = 1.0f;
     }
 
     void Update()
     {
         ColorTransition();
-    }
-
-    void OnLevelWasLoaded(int level)
-    {
-        //Sets timescale when loading menu
-        if (level == 0)
-            Time.timeScale = 1.0f;
     }
 
     void ColorTransition()
@@ -47,20 +41,20 @@ public class MenuScript : MonoBehaviour
             direction = !direction;
         }
 
-        light.color = lerpedColor;
+        menuLight.color = lerpedColor;
     }
 
     public void Loadlevel()
     {
-        Application.LoadLevel(1);
+        SceneManager.LoadScene(1);
     }
 
     public void PlayAnimation()
     {
-        animation = !animation;
-        if (animation)
+        isAnimation = !isAnimation;
+        if (isAnimation)
             animator.Play("MoveCamera");
-        else if (!animation)
+        else if (!isAnimation)
             animator.Play("MoveCameraBack");
     }
 

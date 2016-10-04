@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UIScript : MonoBehaviour {
 
@@ -27,7 +28,17 @@ public class UIScript : MonoBehaviour {
         pauseCanvas.SetActive(false);
         GOCanvas.SetActive(false);
         FPStext.SetActive(false);
-	}
+
+        if (SceneManager.GetActiveScene().buildIndex == 1)
+        {
+            Time.timeScale = 1.0f;
+            ScoreHandlerScript.playerScore = 0;
+            PlayerScript.damage = 30;
+            PlayerScript.currentHealth = 100;
+            PlayerScript.maxHealth = 100;
+            PlayerScript.gold = 0;
+        }
+    }
 	
 	void Update () 
     {
@@ -92,26 +103,12 @@ public class UIScript : MonoBehaviour {
     public void Loadmenu()
     {
         //Loads menu
-        Application.LoadLevel(0);
+        SceneManager.LoadScene(0);
     }
 
     public void Exit()
     {
         Application.Quit();
-    }
-
-    void OnLevelWasLoaded(int level)
-    {
-        //Checks what level was loaded
-        if (level == 1)
-        {
-            Time.timeScale = 1.0f;
-            ScoreHandlerScript.playerScore = 0;
-            PlayerScript.damage = 30;
-            PlayerScript.currentHealth = 100;
-            PlayerScript.maxHealth = 100;
-            PlayerScript.gold = 0;
-        }
     }
 
     void ToggleFPS()
