@@ -13,7 +13,7 @@ GameObject:
   - 23: {fileID: 2334562}
   - 114: {fileID: 11400126}
   - 54: {fileID: 5482008}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Gold
   m_TagString: Untagged
   m_Icon: {fileID: 0}
